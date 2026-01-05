@@ -1,0 +1,496 @@
+PLANNING HEBDOMADAIRE - AFFECTATIONS DÉTAILLÉES
+================================================================================
+
+Caserne ID: 1
+Type de caserne: urbaine
+Pompiers: 32
+Véhicules: 6
+
+
+================================================================================
+LUNDI
+================================================================================
+
+Pompiers présents (22/32) :
+  - Chloe Dupont
+  - Lena Lambert
+  - Clara Thomas
+  - Jade Durand
+  - Clara Richard
+  - Clara Girard
+  - Laura Gauthier
+  - Lucas Simon
+  - Noah Moreau
+  - Hugo Roux
+  - Marie Bonnet
+  - Lena Moreau
+  - Quentin Moreau
+  - Sarah Garcia
+  - Chloe Laurent
+  - Emma Durand
+  - Louis Bonnet
+  - Chloe Laurent
+  - Lea Roux
+  - Nina Girard
+  - Julie Richard
+  - Thomas Simon
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): NON POURVU
+  Poste 1 (COND_B): Laura Gauthier
+  Poste 2 (SUAP): Chloe Laurent
+
+Ambulance :
+  Poste 0 (CHEF_PE): Lena Lambert
+  Poste 1 (COND_B): Chloe Dupont
+  Poste 2 (SUAP): Clara Girard
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Julie Richard
+  Poste 1 (COND_B): Jade Durand
+  Poste 2 (INC): Noah Moreau
+  Poste 3 (INC): Chloe Laurent
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Lena Moreau
+  Poste 1 (COND_B): Marie Bonnet
+  Poste 2 (INC): Quentin Moreau
+  Poste 3 (INC): Clara Richard
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): NON POURVU
+  Poste 1 (COND_C): NON POURVU
+  Poste 2 (INC): Nina Girard
+  Poste 3 (INC): NON POURVU
+  Poste 4 (INC): Lucas Simon
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Lea Roux
+  Poste 1 (COND_C): Thomas Simon
+  Poste 2 (INC): Sarah Garcia
+  Poste 3 (INC): Emma Durand
+  Poste 4 (INC): Clara Thomas
+  Poste 5 (INC): Hugo Roux
+  Poste 6 (INC): Louis Bonnet
+
+================================================================================
+MARDI
+================================================================================
+
+Pompiers présents (23/32) :
+  - Chloe Dupont
+  - Maxime Richard
+  - Lena Lambert
+  - Clara Girard
+  - Louis Martin
+  - Laura Gauthier
+  - Lucas Simon
+  - Noah Moreau
+  - Marie Bonnet
+  - Lena Moreau
+  - Arthur Petit
+  - Quentin Moreau
+  - Lucas Roux
+  - Emma Petit
+  - Emma Durand
+  - Louis Bonnet
+  - Alex Lefevre
+  - Noah Richard
+  - Theo Lefevre
+  - Lea Roux
+  - Nina Girard
+  - Julie Richard
+  - Thomas Simon
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): Noah Moreau
+  Poste 1 (COND_B): Laura Gauthier
+  Poste 2 (SUAP): Clara Girard
+
+Ambulance :
+  Poste 0 (CHEF_PE): Lucas Simon
+  Poste 1 (COND_B): NON POURVU
+  Poste 2 (SUAP): Louis Martin
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Emma Petit
+  Poste 1 (COND_B): Noah Richard
+  Poste 2 (INC): Marie Bonnet
+  Poste 3 (INC): Chloe Dupont
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Lena Moreau
+  Poste 1 (COND_B): Nina Girard
+  Poste 2 (INC): NON POURVU
+  Poste 3 (INC): Quentin Moreau
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): NON POURVU
+  Poste 1 (COND_C): Alex Lefevre
+  Poste 2 (INC): Arthur Petit
+  Poste 3 (INC): Maxime Richard
+  Poste 4 (INC): Lena Lambert
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Lea Roux
+  Poste 1 (COND_C): Thomas Simon
+  Poste 2 (INC): Louis Bonnet
+  Poste 3 (INC): Theo Lefevre
+  Poste 4 (INC): Lucas Roux
+  Poste 5 (INC): Julie Richard
+  Poste 6 (INC): Emma Durand
+
+================================================================================
+MERCREDI
+================================================================================
+
+Pompiers présents (23/32) :
+  - Chloe Dupont
+  - Marie Moreau
+  - Maxime Richard
+  - Camille Andre
+  - Clara Thomas
+  - Jade Durand
+  - Clara Richard
+  - Louis Martin
+  - Laura Gauthier
+  - Hugo Roux
+  - Lena Moreau
+  - Arthur Petit
+  - Quentin Moreau
+  - Sarah Garcia
+  - Lucas Roux
+  - Chloe Laurent
+  - Emma Durand
+  - Louis Bonnet
+  - Alex Lefevre
+  - Chloe Laurent
+  - Noah Richard
+  - Lea Roux
+  - Julie Richard
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): Hugo Roux
+  Poste 1 (COND_B): Laura Gauthier
+  Poste 2 (SUAP): Louis Martin
+
+Ambulance :
+  Poste 0 (CHEF_PE): NON POURVU
+  Poste 1 (COND_B): Jade Durand
+  Poste 2 (SUAP): Chloe Laurent
+
+PetitCamion :
+  Poste 0 (CHEF_PE): NON POURVU
+  Poste 1 (COND_B): Maxime Richard
+  Poste 2 (INC): Louis Bonnet
+  Poste 3 (INC): Emma Durand
+
+PetitCamion :
+  Poste 0 (CHEF_PE): NON POURVU
+  Poste 1 (COND_B): Noah Richard
+  Poste 2 (INC): Chloe Laurent
+  Poste 3 (INC): Marie Moreau
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): Julie Richard
+  Poste 1 (COND_C): Alex Lefevre
+  Poste 2 (INC): Clara Richard
+  Poste 3 (INC): Sarah Garcia
+  Poste 4 (INC): Arthur Petit
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Camille Andre
+  Poste 1 (COND_C): Lea Roux
+  Poste 2 (INC): Clara Thomas
+  Poste 3 (INC): Quentin Moreau
+  Poste 4 (INC): Chloe Dupont
+  Poste 5 (INC): Lena Moreau
+  Poste 6 (INC): Lucas Roux
+
+================================================================================
+JEUDI
+================================================================================
+
+Pompiers présents (23/32) :
+  - Marie Moreau
+  - Maxime Richard
+  - Lena Lambert
+  - Camille Andre
+  - Clara Thomas
+  - Jade Durand
+  - Clara Richard
+  - Clara Girard
+  - Laura Gauthier
+  - Noah Moreau
+  - Hugo Roux
+  - Marie Bonnet
+  - Lena Moreau
+  - Arthur Petit
+  - Emma Petit
+  - Chloe Laurent
+  - Louis Bonnet
+  - Alex Lefevre
+  - Chloe Laurent
+  - Noah Richard
+  - Theo Lefevre
+  - Nina Girard
+  - Julie Richard
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): Julie Richard
+  Poste 1 (COND_B): Nina Girard
+  Poste 2 (SUAP): Chloe Laurent
+
+Ambulance :
+  Poste 0 (CHEF_PE): NON POURVU
+  Poste 1 (COND_B): Lena Lambert
+  Poste 2 (SUAP): Clara Girard
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Noah Moreau
+  Poste 1 (COND_B): Theo Lefevre
+  Poste 2 (INC): Laura Gauthier
+  Poste 3 (INC): Lena Moreau
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Emma Petit
+  Poste 1 (COND_B): Jade Durand
+  Poste 2 (INC): Clara Richard
+  Poste 3 (INC): Arthur Petit
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): Hugo Roux
+  Poste 1 (COND_C): Marie Bonnet
+  Poste 2 (INC): Chloe Laurent
+  Poste 3 (INC): NON POURVU
+  Poste 4 (INC): Maxime Richard
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Camille Andre
+  Poste 1 (COND_C): Alex Lefevre
+  Poste 2 (INC): Louis Bonnet
+  Poste 3 (INC): Marie Moreau
+  Poste 4 (INC): NON POURVU
+  Poste 5 (INC): Noah Richard
+  Poste 6 (INC): Clara Thomas
+
+================================================================================
+VENDREDI
+================================================================================
+
+Pompiers présents (23/32) :
+  - Marie Moreau
+  - Maxime Richard
+  - Camille Andre
+  - Clara Thomas
+  - Jade Durand
+  - Clara Richard
+  - Clara Girard
+  - Lucas Simon
+  - Noah Moreau
+  - Hugo Roux
+  - Arthur Petit
+  - Sarah Garcia
+  - Lucas Roux
+  - Emma Petit
+  - Chloe Laurent
+  - Louis Bonnet
+  - Chloe Laurent
+  - Noah Richard
+  - Theo Lefevre
+  - Lea Roux
+  - Nina Girard
+  - Julie Richard
+  - Thomas Simon
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): Theo Lefevre
+  Poste 1 (COND_B): Jade Durand
+  Poste 2 (SUAP): Chloe Laurent
+
+Ambulance :
+  Poste 0 (CHEF_PE): NON POURVU
+  Poste 1 (COND_B): Maxime Richard
+  Poste 2 (SUAP): Clara Girard
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Noah Moreau
+  Poste 1 (COND_B): Emma Petit
+  Poste 2 (INC): Louis Bonnet
+  Poste 3 (INC): NON POURVU
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Lea Roux
+  Poste 1 (COND_B): Noah Richard
+  Poste 2 (INC): Clara Richard
+  Poste 3 (INC): Julie Richard
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): Hugo Roux
+  Poste 1 (COND_C): NON POURVU
+  Poste 2 (INC): Marie Moreau
+  Poste 3 (INC): Clara Thomas
+  Poste 4 (INC): Lucas Roux
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Camille Andre
+  Poste 1 (COND_C): Thomas Simon
+  Poste 2 (INC): Sarah Garcia
+  Poste 3 (INC): Lucas Simon
+  Poste 4 (INC): Nina Girard
+  Poste 5 (INC): Arthur Petit
+  Poste 6 (INC): Chloe Laurent
+
+================================================================================
+SAMEDI
+================================================================================
+
+Pompiers présents (23/32) :
+  - Chloe Dupont
+  - Marie Moreau
+  - Lena Lambert
+  - Camille Andre
+  - Jade Durand
+  - Clara Richard
+  - Louis Martin
+  - Laura Gauthier
+  - Lucas Simon
+  - Marie Bonnet
+  - Arthur Petit
+  - Quentin Moreau
+  - Sarah Garcia
+  - Lucas Roux
+  - Emma Petit
+  - Chloe Laurent
+  - Emma Durand
+  - Alex Lefevre
+  - Chloe Laurent
+  - Noah Richard
+  - Theo Lefevre
+  - Nina Girard
+  - Thomas Simon
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): Emma Petit
+  Poste 1 (COND_B): Noah Richard
+  Poste 2 (SUAP): Chloe Laurent
+
+Ambulance :
+  Poste 0 (CHEF_PE): Alex Lefevre
+  Poste 1 (COND_B): Chloe Dupont
+  Poste 2 (SUAP): Louis Martin
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Lucas Simon
+  Poste 1 (COND_B): Nina Girard
+  Poste 2 (INC): NON POURVU
+  Poste 3 (INC): Arthur Petit
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Laura Gauthier
+  Poste 1 (COND_B): Jade Durand
+  Poste 2 (INC): Clara Richard
+  Poste 3 (INC): Lena Lambert
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): Theo Lefevre
+  Poste 1 (COND_C): Thomas Simon
+  Poste 2 (INC): Lucas Roux
+  Poste 3 (INC): Marie Moreau
+  Poste 4 (INC): Chloe Laurent
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Camille Andre
+  Poste 1 (COND_C): Marie Bonnet
+  Poste 2 (INC): Quentin Moreau
+  Poste 3 (INC): NON POURVU
+  Poste 4 (INC): NON POURVU
+  Poste 5 (INC): Emma Durand
+  Poste 6 (INC): Sarah Garcia
+
+================================================================================
+DIMANCHE
+================================================================================
+
+Pompiers présents (22/32) :
+  - Chloe Dupont
+  - Marie Moreau
+  - Maxime Richard
+  - Lena Lambert
+  - Camille Andre
+  - Clara Thomas
+  - Clara Girard
+  - Louis Martin
+  - Lucas Simon
+  - Noah Moreau
+  - Hugo Roux
+  - Marie Bonnet
+  - Lena Moreau
+  - Quentin Moreau
+  - Sarah Garcia
+  - Lucas Roux
+  - Emma Petit
+  - Emma Durand
+  - Alex Lefevre
+  - Theo Lefevre
+  - Lea Roux
+  - Thomas Simon
+
+AFFECTATIONS DES VÉHICULES :
+----------------------------------------
+
+Ambulance :
+  Poste 0 (CHEF_PE): Lena Moreau
+  Poste 1 (COND_B): Chloe Dupont
+  Poste 2 (SUAP): Clara Girard
+
+Ambulance :
+  Poste 0 (CHEF_PE): Noah Moreau
+  Poste 1 (COND_B): Alex Lefevre
+  Poste 2 (SUAP): Louis Martin
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Camille Andre
+  Poste 1 (COND_B): Emma Petit
+  Poste 2 (INC): NON POURVU
+  Poste 3 (INC): NON POURVU
+
+PetitCamion :
+  Poste 0 (CHEF_PE): Theo Lefevre
+  Poste 1 (COND_B): Lena Lambert
+  Poste 2 (INC): Lucas Simon
+  Poste 3 (INC): NON POURVU
+
+MoyenCamion :
+  Poste 0 (CHEF_ME): Hugo Roux
+  Poste 1 (COND_C): Thomas Simon
+  Poste 2 (INC): Sarah Garcia
+  Poste 3 (INC): Maxime Richard
+  Poste 4 (INC): Lucas Roux
+
+GrandCamion :
+  Poste 0 (CHEF_GE): Lea Roux
+  Poste 1 (COND_C): Marie Bonnet
+  Poste 2 (INC): Quentin Moreau
+  Poste 3 (INC): Emma Durand
+  Poste 4 (INC): Marie Moreau
+  Poste 5 (INC): Clara Thomas
+  Poste 6 (INC): NON POURVU

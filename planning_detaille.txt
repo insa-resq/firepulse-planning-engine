@@ -1,0 +1,105 @@
+PLANNING HEBDOMADAIRE
+============================================================
+
+Statut de la résolution: OPTIMAL
+Score optimal: 0.0
+
+Répartition des pompiers par jour :
+----------------------------------------
+Pompier             Lun Mar Mer Jeu Ven Sam Dim  Total
+----------------------------------------------------------------------
+Antoine  Martin     : 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ ⬜    5
+Lea      Roux       : ⬜ 🟥 🟥 ⬜ ⬜ ⬜ ⬜    5
+Romain   Robert     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Yanis    Dupont     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Laura    Bonnet     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Arthur   Fournier   : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Antoine  Laurent    : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Alice    Dupont     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Alice    Richard    : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Chloe    Durand     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Arthur   Thomas     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Lena     Martin     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Paul     Martin     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Sarah    Moreau     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Nina     Durand     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Alice    Petit      : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Sarah    Bonnet     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Emma     Roux       : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Yanis    Simon      : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Thomas   Thomas     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Emma     Roux       : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Lena     Girard     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Nina     Dupont     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Eva      Petit      : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Julie    Bonnet     : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Lea      Laurent    : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜    5
+Antoine  Martin     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Marie    Durand     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Alex     Durand     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Laura    Fournier   : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Romain   Durand     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Jade     Robert     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Noah     Richard    : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Maxime   Andre      : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Antoine  Lambert    : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Theo     Moreau     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Manon    Garcia     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Chloe    Gauthier   : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Chloe    Bernard    : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Laura    Thomas     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Jade     Laurent    : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Yanis    Gauthier   : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Alex     Roux       : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Yanis    Richard    : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Manon    Thomas     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Alex     Martin     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Alex     Durand     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Lena     Martin     : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Paul     Petit      : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+Camille  Lambert    : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥    5
+
+============================================================
+STATISTIQUES
+============================================================
+
+Présence quotidienne et armement des véhicules :
+------------------------------------------------------------
+Jour       Présents   Besoin     Manque     % couverture
+------------------------------------------------------------
+Lun                49         26          0    188.5%
+Mar                49         26          0    188.5%
+Mer                48         26          0    184.6%
+Jeu                26         26          0    100.0%
+Ven                26         26          0    100.0%
+Sam                26         26          0    100.0%
+Dim                26         26          0    100.0%
+
+============================================================
+RÉPARTITION DES JOURS DE TRAVAIL
+============================================================
+
+Jours/semaine   Nb pompiers  %         
+----------------------------------------
+              0            0       0.0%
+              1            0       0.0%
+              2            0       0.0%
+              3            0       0.0%
+              4            0       0.0%
+              5           50     100.0%
+              6            0       0.0%
+              7            0       0.0%
+
+============================================================
+VÉHICULES DE LA CASERNE
+============================================================
+
+Nombre total de véhicules: 6
+Besoin total en personnel pour armement: 26 pompiers
+
+Détail par type de véhicule :
+--------------------------------------------------
+Ambulance            :   2 véhicule(s), taille équipe: 3
+PetitCamion          :   2 véhicule(s), taille équipe: 3
+MoyenCamion          :   1 véhicule(s), taille équipe: 3
+GrandCamion          :   1 véhicule(s), taille équipe: 3

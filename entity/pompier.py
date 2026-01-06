@@ -15,17 +15,14 @@ class Qualification(Enum):
     COND_C = 1
     SUAP = 2
     INC = 3
-    SAUVETEUR = 10
     PERMIS_AVION = 4
-    PERMIS_HELICOPTER = 5
-    PERMIS_BATEAU = 6
-    CHEF_PE = 7   # Sergent+
-    CHEF_ME = 8  # Adjudant+
-    CHEF_GE = 9  # Lieutenant+
+    CHEF_PE = 5   # Sergent+
+    CHEF_ME = 6  # Adjudant+
+    CHEF_GE = 7  # Lieutenant+
 
 
 class Pompier:
-    def __init__(self, nom: str, prenom: str, station_id: int, pompier_id: int,
+    def __init__(self, nom: str, prenom: str, station_id: str, pompier_id: int,
                  grade: Grade, qualifications=None):
 
         self.nom = nom

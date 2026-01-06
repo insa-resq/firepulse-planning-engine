@@ -101,8 +101,8 @@ class PetitBateau(Vehicule):
         self.taille_equipe = 4
         self.conditions = {
             Qualification.CHEF_PE: 1,
-            Qualification.PERMIS_BATEAU: 1,  # Conducteur bateau
-            Qualification.SAUVETEUR: 2       # 2 sauveteurs
+            Qualification.COND_B: 1,  # Conducteur bateau
+            Qualification.SUAP: 2       # 2 sauveteurs
         }
 
 
@@ -112,8 +112,8 @@ class GrandBateau(Vehicule):
         self.taille_equipe = 6
         self.conditions = {
             Qualification.CHEF_ME: 1,
-            Qualification.PERMIS_BATEAU: 1,  # Conducteur bateau
-            Qualification.SAUVETEUR: 4       # 4 sauveteurs
+            Qualification.COND_C: 1,  # Conducteur bateau
+            Qualification.SUAP: 4       # 4 sauveteurs
         }
 
 
@@ -122,6 +122,6 @@ class Helicoptere(Vehicule):
         super().__init__(vitesse=200)
         self.taille_equipe = 3
         self.conditions = {
-            Qualification.PERMIS_HELICOPTER: 1,  # Pilote
-            Qualification.SAUVETEUR: 2           # 2 sauveteurs/équipiers
+            Qualification.PERMIS_AVION: 1,  # Pilote
+            Qualification.SUAP: 2           # 2 sauveteurs/équipiers
         }

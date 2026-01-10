@@ -1,40 +1,46 @@
+import asyncio
+
 from ortools.sat.python import cp_model
+
+from entity import caserne
 from entity.casernefactory import CaserneFactory
 from entity.caserne import Caserne
 from entity.pompier import Qualification
-
+from Data.Client import RemoteClient
 
 # =====================================================
 # 1) Données du problème
 # =====================================================
-
-def get_data():
-    # Création d'une caserne complète avec la nouvelle factory
-    caserne = CaserneFactory.creer_caserne(
-        nb_pompiers=50,
-        station_id=1,
-        type_caserne=None  # Type aléatoire selon les probabilités
-    )
-
-    # Afficher un résumé de la caserne créée
+def get_data(id_caserne: str):
+    """Version SYNCHRONE"""
     print("\n" + "=" * 60)
     print("CASERNE CRÉÉE")
     print("=" * 60)
-    caserne.resume()
     print("=" * 60 + "\n")
 
-    pompiers = caserne.pompiers
-    vehicules = caserne.vehicules
-    jours = range(7)
+    # Création synchrone
+    client = RemoteClient()
+    # Crée une nouvelle event loop pour l'appel asynchrone
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
 
+    try:
+        # Exécute de façon synchrone
+        vehicules, pompiers = loop.run_until_complete(
+            client.get_all_station_infos(id_caserne)
+        )
+        loop.run_until_complete(client.close())
+    finally:
+        loop.close()
+
+    jours = range(7)
     params = {
         "MAX_JOURS_SEMAINE": 5,
         "MAX_CONSECUTIFS": 3,
         "MIN_POMPIERS_PAR_JOUR": 10
     }
 
-    return caserne, jours, params
-
+    return pompiers, vehicules, jours, params
 
 # =====================================================
 # 2) Création des variables du modèle
@@ -296,6 +302,40 @@ def add_contrainte_affectation_unique_par_qualification(model, X, pompiers, vehi
 # 5) Solve et affichage
 # =====================================================
 
+def add_objective_complet(model, X, pompiers, jours, manques_vehicules, manques_qualifs):
+    """
+    Objectif complet avec les 3 contraintes soft.
+    """
+    # Calcul des écarts d'équité
+    totaux = {
+        p: model.NewIntVar(0, 7, f"total_p{p.pompier_id}")
+        for p in pompiers
+    }
+
+    for p in pompiers:
+        model.Add(totaux[p] == sum(X[p, j] for j in jours))
+
+    moyenne = 5
+    ecarts = []
+
+    for p in pompiers:
+        ecart = model.NewIntVar(0, 7, f"ecart_p{p.pompier_id}")
+        model.Add(ecart >= totaux[p] - moyenne)
+        model.Add(ecart >= moyenne - totaux[p])
+        ecarts.append(ecart)
+
+    # NOUVELLE PONDÉRATION :
+    # 1. Qualifications (le plus important) : coeff 1000
+    # 2. Véhicules (important) : coeff 100
+    # 3. Équité (secondaire) : coeff 1
+
+    model.Minimize(
+        1000 * sum(manques_qualifs) +  # Priorité MAX : qualifications
+        100 * sum(manques_vehicules) +  # Priorité haute : véhicules
+        1 * sum(ecarts)  # Priorité basse : équité
+    )
+
+
 def solve_and_print(model, X, pompiers, vehicules, jours, output_file="planning.txt"):
     solver = cp_model.CpSolver()
 
@@ -311,7 +351,8 @@ def solve_and_print(model, X, pompiers, vehicules, jours, output_file="planning.
     stats = {
         "jours_travailles": {p: 0 for p in pompiers},
         "presents_par_jour": {j: 0 for j in jours},
-        "manque_total": 0
+        "manque_total": 0,
+        "pourcentages_jour": {j: 0 for j in jours}  # NOUVEAU
     }
 
     # Calcul du besoin total pour l'armement
@@ -356,13 +397,21 @@ def solve_and_print(model, X, pompiers, vehicules, jours, output_file="planning.
         f.write(f"{'Jour':10} {'Présents':10} {'Besoin':10} {'Manque':10} {'% couverture'}\n")
         f.write("-" * 60 + "\n")
 
+        pourcentages = []  # Pour calculer la moyenne
+
         for j in jours:
             presents = stats["presents_par_jour"][j]
             manque = max(0, besoin_total - presents)
             stats["manque_total"] += manque
             pourcentage = (presents / besoin_total * 100) if besoin_total > 0 else 100
+            stats["pourcentages_jour"][j] = pourcentage
+            pourcentages.append(pourcentage)
 
             f.write(f"{jours_noms[j]:10} {presents:10} {besoin_total:10} {manque:10} {pourcentage:8.1f}%\n")
+
+        # CALCUL MOYENNE
+        pourcentage_moyen = sum(pourcentages) / len(pourcentages) if pourcentages else 0
+        f.write(f"{'MOYENNE':10} {'':10} {'':10} {'':10} {pourcentage_moyen:8.1f}%\n")
 
         f.write("\n" + "=" * 60 + "\n")
         f.write("RÉPARTITION DES JOURS DE TRAVAIL\n")
@@ -412,19 +461,12 @@ def solve_and_print(model, X, pompiers, vehicules, jours, output_file="planning.
     print(f"  - Pompiers présents en moyenne : {sum(stats['presents_par_jour'].values()) / 7:.1f}/jour")
     print(f"  - Manque total de personnel : {stats['manque_total']} jours-pompier")
     print(f"  - Besoin pour armement complet : {besoin_total} pompiers/jour")
-
-
-# =====================================================
-# 6) Pipeline principal
-# =====================================================
-
+    print(f"  - Pourcentage moyen de complétion : {pourcentage_moyen:.1f}%")  # NOUVEAU
 def main():
     # ----------------------------
     # Données
     # ----------------------------
-    caserne, jours, params = get_data()
-    pompiers = caserne.pompiers
-    vehicules = caserne.vehicules
+    pompiers, vehicules, jours, params = get_data("ya90o4bmzc1o5nk0zbanjbc0")
 
     # ----------------------------
     # Modèle CP-SAT
@@ -452,25 +494,35 @@ def main():
     )
 
     # ----------------------------
-    # Contrainte SOFT (véhicules)
+    # Contrainte SOFT 1 : Véhicules
     # ----------------------------
-    manques = add_soft_contrainte_vehicules(
+    manques_vehicules = add_soft_contrainte_vehicules(
         model, X, pompiers, vehicules, jours
     )
 
     # ----------------------------
-    # Objectif global
+    # Contrainte SOFT 2 : Qualifications (AJOUTÉ)
     # ----------------------------
-    add_objective_equilibre(
-        model, X, pompiers, jours, manques
+    manques_qualifs, besoins_totaux = add_soft_contrainte_qualifications_avec_hierarchie(
+        model, X, pompiers, vehicules, jours
+    )
+
+    # ----------------------------
+    # Objectif global (REMPlACÉ)
+    # ----------------------------
+    # ANCIEN (à supprimer) :
+    # add_objective_equilibre(model, X, pompiers, jours, manques_vehicules)
+
+    # NOUVEAU :
+    add_objective_complet(
+        model, X, pompiers, jours,
+        manques_vehicules, manques_qualifs
     )
 
     # ----------------------------
     # Résolution
     # ----------------------------
     solve_and_print(model, X, pompiers, vehicules, jours, "planning_detaille.txt")
-    print(caserne.get_conditions())
-
 
 if __name__ == "__main__":
     main()

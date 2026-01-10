@@ -12,8 +12,8 @@ class Vehicule:
         self.conducteur: Optional[Pompier] = None
         self.chef: Optional[Pompier] = None
         self.equipe: List[Pompier] = []     # équipiers
-        self.caserneid: Optional[int] = None
-        self.vehicule_id: Optional[int] = None
+        self.caserneid: Optional[str] = None
+        self.vehicule_id: Optional[str] = None
         self.conditions: Optional[List[Qualification]] = None
     def set_conducteur(self, p: Pompier):
         self.conducteur = p

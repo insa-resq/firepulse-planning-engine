@@ -5,6 +5,7 @@ import time
 from typing import Dict, List, Optional, Tuple
 
 import httpx
+from entity.vehicule import *
 from entity.pompier import Qualification
 from entity.pompier import Grade
 from entity.pompier import Pompier
@@ -266,4 +267,118 @@ class RemoteClient:
 
         api_grade_upper = api_grade.upper() if api_grade else ''
         return grade_mapping.get(api_grade_upper, Grade.SAPEUR)
+
+    async def get_vehicules_by_station(self, station_id: str) -> List[Vehicule]:
+        """
+        Récupère tous les véhicules d'une station et les convertit en objets Vehicule
+        """
+        logger.info(f"Récupération des véhicules pour la station {station_id}")
+
+        vehicules = []
+
+        try:
+            # 1. Récupérer les données brutes des types de véhicules
+            types_data = await self._get_vehicules_raw_by_station(station_id)
+
+            if not types_data:
+                logger.info(f"Aucun véhicule trouvé pour la station {station_id}")
+                return []
+
+            # 2. Pour chaque type de véhicule
+            for type_data in types_data:
+                vehicle_type = type_data.get('type', '').strip()
+                total_count = type_data.get('totalCount', 0)
+                available_count = type_data.get('availableCount', 0)
+                type_id = type_data.get('id')
+
+                if total_count <= 0:
+                    continue
+
+                # 3. Créer les instances selon totalCount
+                for i in range(total_count):
+                    # Créer le véhicule selon le type
+                    vehicule = self._create_vehicule_from_type(vehicle_type)
+
+                    # Définir les attributs
+                    vehicule.vehicule_id = f"{type_id}_{i + 1}"
+                    vehicule.caserneid = station_id
+                    vehicule.disponible = (i < available_count)
+                    vehicule.type_name = vehicle_type
+                    vehicule.instance_num = i + 1
+
+                    vehicules.append(vehicule)
+
+            logger.info(f"Créé {len(vehicules)} véhicule(s) pour la station {station_id}")
+            return vehicules
+
+        except Exception as e:
+            logger.error(f"Erreur: {e}")
+            raise
+
+    def _create_vehicule_from_type(self, vehicle_type: str) -> Vehicule:
+        """
+        Crée un objet Vehicule selon le type
+        """
+        # Mapping exact
+        mapping = {
+            'AMBULANCE': Ambulance,
+            'CANADAIR': Canadair,
+            'SMALL_TRUCK': PetitCamion,
+            'MEDIUM_TRUCK': MoyenCamion,
+            'LARGE_TRUCK': GrandCamion,
+            'SMALL_BOAT': PetitBateau,
+            'LARGE_BOAT': GrandBateau,
+            'HELICOPTER': Helicoptere,
+        }
+
+        type_upper = vehicle_type.upper()
+
+        if type_upper in mapping:
+            return mapping[type_upper]()
+        else:
+            # Type non reconnu, véhicule générique
+            logger.warning(f"Type '{vehicle_type}' non reconnu, véhicule générique")
+            return Vehicule(vitesse=60)
+
+    async def _get_vehicules_raw_by_station(self, station_id: str) -> List[Dict]:
+        """
+        Récupère les données brutes des véhicules d'une station
+        """
+        logger.info(f"Récupération données brutes pour station {station_id}")
+        headers = await self._get_headers()
+
+        try:
+            response = await self._client.get(
+                url="registry-service/vehicles",
+                params={"stationId": station_id},
+                headers=headers
+            )
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            logger.error(f"Erreur récupération données: {e}")
+            raise
+
+    async def get_all_station_infos(self, station_id: str) -> Tuple[List[Vehicule], List[Pompier]]:
+        """
+        Récupère toutes les infos d'une station (véhicules + pompiers)
+        Retourne un tuple (liste_vehicules, liste_pompiers)
+        """
+        logger.info(f"Récupération complète des infos pour la station {station_id}")
+
+        try:
+            # Récupérer en parallèle les véhicules et pompiers
+            vehicules_task = self.get_vehicules_by_station(station_id)
+            pompiers_task = self.get_pompiers_by_station(station_id)
+
+            # Exécuter les deux en parallèle
+            vehicules, pompiers = await asyncio.gather(vehicules_task, pompiers_task)
+
+            logger.info(f"Station {station_id}: {len(vehicules)} véhicules, {len(pompiers)} pompiers")
+            return vehicules, pompiers
+
+        except Exception as e:
+            logger.error(f"Erreur récupération infos station {station_id}: {e}")
+            raise
+
 remote_client = RemoteClient()

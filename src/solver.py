@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import sys
 from pathlib import Path
 from typing import List, Tuple, Final, Optional
@@ -13,14 +12,32 @@ from src.entities.vehicle import VehicleFilters
 from src.entities.vehicule import Vehicule
 from src.utils.remote_client import remote_client
 
-_logger: Final = logging.getLogger(__name__)
-
 _OUTPUT_DIR: Final = Path("output")
 
 _MAX_WORKING_DAYS_PER_WEEK: Final = 5
 _MAX_CONSECUTIVE_WORKING_DAYS: Final = 3
 _MIN_FIREFIGHTERS_PER_DAY: Final = 10
 _WEEK_DAYS: Final = list(range(7))
+
+try:
+    from codecarbon import track_emissions
+    print("CodeCarbon is available. Tracking enabled.")
+except ImportError:
+    print("CodeCarbon not found. Tracking disabled.")
+
+    def track_emissions(fn=None, **_):
+        """
+        A no-op decorator that does nothing but return the original function.
+        It handles both @track_emissions and @track_emissions(param=...) usages.
+        """
+        # Case 1: Called as @track_emissions (no parentheses)
+        if fn is not None and callable(fn):
+            return fn
+
+        # Case 2: Called as @track_emissions(...) (with parentheses/arguments)
+        def decorator(func):
+            return func
+        return decorator
 
 async def _get_pompiers_for_station(station_id: str) -> List[Pompier]:
     # 1. Récupérer les firefighters depuis l'API
@@ -480,12 +497,12 @@ def run_solver(model, X, pompiers, vehicules, output_file=None):
     print(f"  - Besoin pour armement complet : {besoin_total} pompiers/jour")
     print(f"  - Pourcentage moyen de complétion : {pourcentage_moyen:.1f}%")
 
-
+@track_emissions()
 async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
     try:
         firefighters, vehicles = await _get_data(planning_id)
     except Exception as e:
-        _logger.error(f"Error fetching data for planning ID {planning_id}: {e}")
+        print(f"Error fetching data for planning ID {planning_id}: {e}", file=sys.stderr)
         sys.exit(1)
 
     model = cp_model.CpModel()

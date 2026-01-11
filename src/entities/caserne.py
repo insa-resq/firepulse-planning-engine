@@ -1,8 +1,5 @@
-# entity/caserne.py
-
 from typing import List, Dict
-from .pompier import Pompier
-from .pompier import Qualification
+from .pompier import Pompier, Qualification
 from .vehicule import Vehicule
 
 
@@ -55,7 +52,6 @@ class Caserne:
         Retourne un dictionnaire avec les qualifications nécessaires
         et le nombre de personnes requises pour chaque qualification.
         """
-        print("lala")
         qualifications_dict = {
             Qualification.COND_B: 0,
             Qualification.COND_C: 0,
@@ -71,7 +67,6 @@ class Caserne:
 
         for vehicule in self.vehicules:
             for cond in vehicule.conditions:
-                print(cond)
                 qualifications_dict[cond] +=1
 
         return qualifications_dict

@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+from src.entities.firefighter import FirefighterRank
+
 
 class Grade(Enum):
     SAPEUR = auto()
@@ -9,6 +11,17 @@ class Grade(Enum):
     LIEUTENANT = auto()
     CAPITAINE = auto()
 
+    @staticmethod
+    def from_rank(rank: FirefighterRank) -> 'Grade':
+        mapping = {
+            FirefighterRank.SAPPER: Grade.SAPEUR,
+            FirefighterRank.CORPORAL: Grade.CAPORAL,
+            FirefighterRank.SERGEANT: Grade.SERGENT,
+            FirefighterRank.ADJUTANT: Grade.ADJUDANT,
+            FirefighterRank.LIEUTENANT: Grade.LIEUTENANT,
+            FirefighterRank.CAPTAIN: Grade.CAPITAINE,
+        }
+        return mapping[rank]
 
 class Qualification(Enum):
     COND_B = 0

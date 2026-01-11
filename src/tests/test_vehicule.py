@@ -1,25 +1,21 @@
-# test_vehicules_final.py
 import asyncio
 
+from src.entities.vehicle import VehicleFilters
+from src.utils.remote_client import remote_client
 
 async def main():
-    from Data.Client import remote_client
-
     try:
         # Récupérer une station
-        stations = await remote_client.get_all_fire_stations()
-        if not stations:
-            print("Pas de stations")
-            return
+        first_station = (await remote_client.get_fire_stations())[0]
+        station = await remote_client.get_fire_station(station_id=first_station.id)
 
-        station_id = stations[0].get('id')
-        station_name = stations[0].get('name')
-
-        print(f"Station: {station_name} (ID: {station_id})")
+        print(f"Station: {station.name} (ID: {station.id})")
         print("=" * 60)
 
         # Récupérer les véhicules
-        vehicules = await remote_client.get_vehicules_by_station(station_id)
+        vehicules = await remote_client.get_vehicles(
+            filters=VehicleFilters(stationId=station.id)
+        )
 
         print(f"\nLISTE COMPLÈTE DES VÉHICULES:")
         print(f"Total: {len(vehicules)} véhicule(s)")
@@ -36,7 +32,6 @@ async def main():
             print(f"   Statut: {dispo}")
             print(f"   ID: {v.vehicule_id}")
             print(f"   Type: {v.type_name}")
-            print(f"   Vitesse: {v.vitesse} km/h")
             print(f"   Taille équipe: {v.taille_equipe} personnes")
             print(f"   Numéro d'instance: {v.instance_num}")
 
@@ -66,8 +61,6 @@ async def main():
 
     except Exception as e:
         print(f"Erreur: {e}")
-        import traceback
-        traceback.print_exc()
     finally:
         await remote_client.close()
 

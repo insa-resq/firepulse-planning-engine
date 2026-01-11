@@ -1,25 +1,20 @@
-# test_pompiers.py
 import asyncio
 
+from src.entities.firefighter import FirefighterFilters
+from src.utils.remote_client import remote_client
 
 async def main():
-    from Data.Client import remote_client
-
     try:
-        # Récupérer toutes les stations
-        stations = await remote_client.get_all_fire_stations()
-        if not stations:
-            print("Pas de stations trouvées")
-            return
+        # Récupérer une station
+        first_station = (await remote_client.get_fire_stations())[0]
+        station = await remote_client.get_fire_station(station_id=first_station.id)
 
-        # Prendre la première station
-        station_id = stations[1].get('id')
-        station_name = stations[1].get('name')
-
-        print(f"Station: {station_name} (ID: {station_id})")
+        print(f"Station: {station.name} (ID: {station.id})")
 
         # Récupérer les pompiers sous forme d'objets Pompier
-        pompiers = await remote_client.get_pompiers_by_station(station_id)
+        pompiers = await remote_client.get_firefighters(
+            filters=FirefighterFilters(stationId=station.id)
+        )
 
         print(f"\n{len(pompiers)} pompier(s) trouvé(s):")
         print("=" * 60)

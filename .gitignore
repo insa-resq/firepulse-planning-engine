@@ -136,6 +136,8 @@ celerybeat.pid
 
 # Environments
 .env
+!.env.example
+!.env.ci
 .envrc
 .venv
 env/
@@ -205,3 +207,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+.idea/*
+credentials.json
+.codecarbon.config

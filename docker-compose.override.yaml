@@ -1,0 +1,6 @@
+name: firepulse-planning-engine-services-override
+
+services:
+  api-service:
+    image: firepulse-planning-engine-api-service
+    pull_policy: never

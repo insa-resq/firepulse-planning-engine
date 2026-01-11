@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "firepulse-planning-engine"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard-no-fastapi-cloud-cli]==0.128.0",
+    "httpx==0.28.1",
+    "ortools==9.14.6206",
+    "pydantic-settings==2.12.0",
+    "python-dotenv==1.2.1",
+    "uvicorn[standard]==0.40.0",
+]
+
+[project.optional-dependencies]
+monitoring = [
+    "codecarbon==3.2.1",
+]

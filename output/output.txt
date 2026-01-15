@@ -3,249 +3,408 @@ PLANNING HEBDOMADAIRE
 
 RÉPARTITION DES POMPIERS
 ------------------------------------------------------------
-Arabelle Martin          : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥 
-Calixte Marty           : 🟥 ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 
-Léa Rousseau        : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥 
-Vincent Faure           : ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ 
-Sixtine Rodriguez       : ⬜ ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 
-Félix Dubois          : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥 
-Lorrain Meunier         : 🟥 ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 
-Liétald Rolland         : ⬜ ⬜ ⬜ ⬜ 🟥 🟥 ⬜ 
-Doriane Leroux          : ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ 
-Zéphirin Robert          : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ 
-Clémentine Collet          : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜ 
-Chloé Martin          : 🟥 🟥 ⬜ ⬜ ⬜ ⬜ ⬜ 
-Guilhemine Moulin          : ⬜ 🟥 🟥 ⬜ ⬜ ⬜ ⬜ 
-Océane Francois        : ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
-Amandine Vidal           : ⬜ ⬜ ⬜ ⬜ ⬜ 🟥 🟥 
-Marion Lacroix         : ⬜ ⬜ 🟥 🟥 ⬜ ⬜ ⬜ 
-Tatiana Bernard         : ⬜ ⬜ ⬜ ⬜ 🟥 🟥 ⬜ 
-Aquiline Adam            : 🟥 ⬜ ⬜ ⬜ ⬜ 🟥 ⬜ 
+Anastase Le gall         : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ 
+Geneviève Barbier         : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ 
+Pauline Vincent         : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ 
+Gabin Morel           : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Raymond Faure           : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
+Brieuc Paris           : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 
+Frédérique Bertrand        : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Mélanie Poirier         : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Salomé Paris           : ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ 
+Adeline Hubert          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
+Jonathan Andre           : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Hincmar Arnaud          : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 
+Lucienne Blanchard       : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Avoye Vidal           : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
+Marcelin Lemoine         : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
+Ursule Henry           : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 
+Amaliane Dumas           : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜ 
+Apolline Renaud          : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜ 
+Théophraste Laurent         : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
+Éloïse Schneider       : ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ 
+Abdonie Martin          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
+Julien Dumas           : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 
+Madeleine Menard          : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 
+Armandine Caron           : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ 
+Georges Bonnet          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
+Annette Renard          : ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ 
+Sophie Masson          : ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ 
+Anicée Dumont          : ⬜ ⬜ 🟥 🟥 ⬜ ⬜ ⬜ 
+Amant Olivier         : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Baudouin Petit           : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
+Adélaïde David           : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
+Raymonde Collet          : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 
+Clémentine Sanchez         : ⬜ ⬜ 🟥 🟥 ⬜ ⬜ ⬜ 
+Herluin Duval           : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
+Léna Dufour          : ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
+Aliénor Guerin          : ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ 
+Gerbert Marchand        : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
 
 ============================================================
 
 MONDAY
 ----------------------------------------
 
-Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Doriane Leroux [INC]
-  ✓ Clémentine Collet [PERMIS_AVION]
-
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
-
-GrandBateau (✓ COMPLET) - 6/6 rôles
-  ✓ Arabelle Martin [SUAP]
-  ✓ Vincent Faure [SUAP]
-  ✓ Félix Dubois [CHEF_ME]
-  ✓ Guilhemine Moulin [SUAP]
-  ✓ Océane Francois [SUAP]
-  ✓ Amandine Vidal [COND_C]
-
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
-
 Ambulance (✓ COMPLET) - 3/3 rôles
-  ✓ Sixtine Rodriguez [CHEF_PE]
-  ✓ Marion Lacroix [COND_B]
-  ✓ Tatiana Bernard [SUAP]
+  ✓ Anastase Le gall [CHEF_PE]
+  ✓ Pauline Vincent [COND_B]
+  ✓ Salomé Paris [SUAP]
 
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Geneviève Barbier [COND_B]
+  ✓ Raymond Faure [CHEF_PE]
+  ✓ Marcelin Lemoine [SUAP]
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+Helicoptere (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 2 SUAP
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Georges Bonnet [INC]
+  ✓ Annette Renard [PERMIS_AVION]
+
+Canadair (✗ INCOMPLET) - 0/2 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 1 INC
+
+Canadair (✗ INCOMPLET) - 0/2 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 1 INC
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 TUESDAY
 ----------------------------------------
 
-Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Clémentine Collet [PERMIS_AVION]
-  ✓ Aquiline Adam [INC]
-
-GrandBateau (✓ COMPLET) - 6/6 rôles
-  ✓ Arabelle Martin [SUAP]
-  ✓ Calixte Marty [SUAP]
-  ✓ Vincent Faure [SUAP]
-  ✓ Félix Dubois [CHEF_ME]
-  ✓ Lorrain Meunier [SUAP]
-  ✓ Amandine Vidal [COND_C]
-
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
-
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
-
 Ambulance (✓ COMPLET) - 3/3 rôles
-  ✓ Sixtine Rodriguez [CHEF_PE]
-  ✓ Océane Francois [SUAP]
-  ✓ Tatiana Bernard [COND_B]
+  ✓ Gabin Morel [COND_B]
+  ✓ Frédérique Bertrand [SUAP]
+  ✓ Amant Olivier [CHEF_PE]
 
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Mélanie Poirier [SUAP]
+  ✓ Salomé Paris [COND_B]
+  ✓ Baudouin Petit [CHEF_PE]
+
+Helicoptere (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 2 SUAP
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Hincmar Arnaud [PERMIS_AVION]
+  ✓ Amaliane Dumas [INC]
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Jonathan Andre [INC]
+  ✓ Gerbert Marchand [PERMIS_AVION]
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Brieuc Paris [INC]
+  ✓ Annette Renard [PERMIS_AVION]
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 WEDNESDAY
 ----------------------------------------
 
-Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Zéphirin Robert [INC]
-  ✓ Chloé Martin [PERMIS_AVION]
+Ambulance (✓ COMPLET) - 3/3 rôles
+  ✓ Raymond Faure [CHEF_PE]
+  ✓ Amaliane Dumas [COND_B]
+  ✓ Apolline Renaud [SUAP]
 
-GrandBateau (✓ COMPLET) - 6/6 rôles
-  ✓ Arabelle Martin [SUAP]
-  ✓ Calixte Marty [SUAP]
-  ✓ Vincent Faure [SUAP]
-  ✓ Félix Dubois [CHEF_ME]
-  ✓ Lorrain Meunier [SUAP]
-  ✓ Amandine Vidal [COND_C]
-
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
-
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
-
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
 
-Ambulance (✓ COMPLET) - 3/3 rôles
-  ✓ Sixtine Rodriguez [CHEF_PE]
-  ✓ Liétald Rolland [SUAP]
-  ✓ Aquiline Adam [COND_B]
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Geneviève Barbier [SUAP]
+  ✓ Gabin Morel [COND_B]
+  ✓ Amant Olivier [CHEF_PE]
+
+Helicoptere (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 2 SUAP
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Anastase Le gall [PERMIS_AVION]
+  ✓ Mélanie Poirier [INC]
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Jonathan Andre [INC]
+  ✓ Hincmar Arnaud [PERMIS_AVION]
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Brieuc Paris [INC]
+  ✓ Gerbert Marchand [PERMIS_AVION]
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Pauline Vincent [INC]
+  ✓ Frédérique Bertrand [COND_C]
+  ✓ Ursule Henry [INC]
+  ✓ Baudouin Petit [CHEF_ME]
+
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 THURSDAY
 ----------------------------------------
 
-Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Chloé Martin [PERMIS_AVION]
-  ✓ Aquiline Adam [INC]
+Ambulance (✓ COMPLET) - 3/3 rôles
+  ✓ Baudouin Petit [CHEF_PE]
+  ✓ Adélaïde David [SUAP]
+  ✓ Aliénor Guerin [COND_B]
 
-GrandBateau (✓ COMPLET) - 6/6 rôles
-  ✓ Arabelle Martin [SUAP]
-  ✓ Calixte Marty [SUAP]
-  ✓ Félix Dubois [CHEF_ME]
-  ✓ Lorrain Meunier [SUAP]
-  ✓ Guilhemine Moulin [SUAP]
-  ✓ Amandine Vidal [COND_C]
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Frédérique Bertrand [COND_B]
+  ✓ Salomé Paris [SUAP]
+  ✓ Amant Olivier [CHEF_PE]
 
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
-
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
-
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
 
-Ambulance (✓ COMPLET) - 3/3 rôles
-  ✓ Léa Rousseau [SUAP]
-  ✓ Sixtine Rodriguez [CHEF_PE]
-  ✓ Liétald Rolland [COND_B]
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Gabin Morel [SUAP]
+  ✓ Raymond Faure [CHEF_PE]
+  ✓ Avoye Vidal [COND_B]
+
+Helicoptere (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 2 SUAP
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Mélanie Poirier [INC]
+  ✓ Gerbert Marchand [PERMIS_AVION]
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Jonathan Andre [INC]
+  ✓ Annette Renard [PERMIS_AVION]
+
+Canadair (✗ INCOMPLET) - 0/2 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 1 INC
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 FRIDAY
 ----------------------------------------
 
+Ambulance (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Geneviève Barbier [SUAP]
+  ✓ Raymond Faure [CHEF_PE]
+  ✓ Salomé Paris [COND_B]
+
+Helicoptere (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 2 SUAP
+
 Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Chloé Martin [PERMIS_AVION]
-  ✓ Aquiline Adam [INC]
+  ✓ Pauline Vincent [INC]
+  ✓ Annette Renard [PERMIS_AVION]
 
-GrandBateau (✓ COMPLET) - 6/6 rôles
-  ✓ Arabelle Martin [SUAP]
-  ✓ Calixte Marty [SUAP]
-  ✓ Félix Dubois [CHEF_ME]
-  ✓ Guilhemine Moulin [SUAP]
-  ✓ Océane Francois [SUAP]
-  ✓ Amandine Vidal [COND_C]
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Brieuc Paris [INC]
+  ✓ Hincmar Arnaud [PERMIS_AVION]
 
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
+Canadair (✗ INCOMPLET) - 0/2 rôles
   (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
+  Manquants: 1 PERMIS_AVION, 1 INC
 
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Anastase Le gall [CHEF_ME]
+  ✓ Ursule Henry [INC]
+  ✓ Sophie Masson [INC]
+  ✓ Adélaïde David [COND_C]
 
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   (aucun pompier assigné)
-  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
 
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
   (aucun pompier assigné)
-  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 SATURDAY
 ----------------------------------------
 
-Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Clémentine Collet [PERMIS_AVION]
-  ✓ Marion Lacroix [INC]
-
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
-
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
-
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
-
-Ambulance (✓ COMPLET) - 3/3 rôles
-  ✓ Calixte Marty [SUAP]
-  ✓ Sixtine Rodriguez [CHEF_PE]
-  ✓ Chloé Martin [COND_B]
-
 Ambulance (✗ INCOMPLET) - 0/3 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Geneviève Barbier [SUAP]
+  ✓ Gabin Morel [COND_B]
+  ✓ Amant Olivier [CHEF_PE]
+
+Helicoptere (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 2 SUAP
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Hincmar Arnaud [PERMIS_AVION]
+  ✓ Amaliane Dumas [INC]
+
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Jonathan Andre [INC]
+  ✓ Gerbert Marchand [PERMIS_AVION]
+
+Canadair (✗ INCOMPLET) - 0/2 rôles
+  (aucun pompier assigné)
+  Manquants: 1 PERMIS_AVION, 1 INC
+
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Brieuc Paris [INC]
+  ✓ Frédérique Bertrand [COND_C]
+  ✓ Mélanie Poirier [INC]
+  ✓ Baudouin Petit [CHEF_ME]
+
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Anastase Le gall [CHEF_ME]
+  ✓ Pauline Vincent [INC]
+  ✓ Lucienne Blanchard [COND_C]
+  ✓ Ursule Henry [INC]
+
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 SUNDAY
 ----------------------------------------
 
+Ambulance (✓ COMPLET) - 3/3 rôles
+  ✓ Baudouin Petit [CHEF_PE]
+  ✓ Clémentine Sanchez [SUAP]
+  ✓ Aliénor Guerin [COND_B]
+
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Raymond Faure [CHEF_PE]
+  ✓ Sophie Masson [COND_B]
+  ✓ Anicée Dumont [SUAP]
+
+PetitBateau (✗ INCOMPLET) - 0/3 rôles
+  (aucun pompier assigné)
+  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+
+PetitBateau (✓ COMPLET) - 3/3 rôles
+  ✓ Pauline Vincent [COND_B]
+  ✓ Gabin Morel [SUAP]
+  ✓ Amant Olivier [CHEF_PE]
+
+Helicoptere (✓ COMPLET) - 3/3 rôles
+  ✓ Geneviève Barbier [SUAP]
+  ✓ Mélanie Poirier [SUAP]
+  ✓ Annette Renard [PERMIS_AVION]
+
 Canadair (✓ COMPLET) - 2/2 rôles
-  ✓ Liétald Rolland [INC]
-  ✓ Clémentine Collet [PERMIS_AVION]
+  ✓ Hincmar Arnaud [PERMIS_AVION]
+  ✓ Amaliane Dumas [INC]
 
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
+Canadair (✓ COMPLET) - 2/2 rôles
+  ✓ Jonathan Andre [INC]
+  ✓ Gerbert Marchand [PERMIS_AVION]
 
-GrandBateau (✗ INCOMPLET) - 0/6 rôles
+Canadair (✗ INCOMPLET) - 0/2 rôles
   (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 4 SUAP
+  Manquants: 1 PERMIS_AVION, 1 INC
 
-MoyenCamion (✗ INCOMPLET) - 0/5 rôles
+MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   (aucun pompier assigné)
-  Manquants: 1 CHEF_ME, 1 COND_C, 3 INC
+  Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
 
-Ambulance (✗ INCOMPLET) - 0/3 rôles
-  (aucun pompier assigné)
-  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Anastase Le gall [CHEF_ME]
+  ✓ Brieuc Paris [INC]
+  ✓ Frédérique Bertrand [COND_C]
+  ✓ Ursule Henry [INC]
 
-Ambulance (✗ INCOMPLET) - 0/3 rôles
+GrandCamion (✗ INCOMPLET) - 0/6 rôles
   (aucun pompier assigné)
-  Manquants: 1 CHEF_PE, 1 COND_B, 1 SUAP
+  Manquants: 1 CHEF_GE, 1 COND_C, 4 INC
 
 ============================================================
 STATISTIQUES
 ----------------------------------------
-Rôles assignés: 59/175 (33.7%)
-MONDAY: 3/6 véhicules complets
-TUESDAY: 3/6 véhicules complets
-WEDNESDAY: 3/6 véhicules complets
-THURSDAY: 3/6 véhicules complets
-FRIDAY: 2/6 véhicules complets
-SATURDAY: 2/6 véhicules complets
-SUNDAY: 1/6 véhicules complets
+Rôles assignés: 95/245 (38.8%)
+MONDAY: 3/11 véhicules complets
+TUESDAY: 5/11 véhicules complets
+WEDNESDAY: 6/11 véhicules complets
+THURSDAY: 5/11 véhicules complets
+FRIDAY: 4/11 véhicules complets
+SATURDAY: 5/11 véhicules complets
+SUNDAY: 7/11 véhicules complets

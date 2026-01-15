@@ -67,44 +67,44 @@ class PetitCamion(Vehicule):
 class MoyenCamion(Vehicule):
     def __init__(self):
         super().__init__(
-            taille_equipe=5,
+            taille_equipe=4,
             conditions={
                 Qualification.CHEF_ME: 1,
                 Qualification.COND_C: 1,
-                Qualification.INC: 3
+                Qualification.INC: 2
             }
         )
 
 class GrandCamion(Vehicule):
     def __init__(self):
         super().__init__(
-            taille_equipe=7,
+            taille_equipe=6,
             conditions={
                 Qualification.CHEF_GE: 1,
                 Qualification.COND_C: 1,
-                Qualification.INC: 5
+                Qualification.INC: 4
             }
         )
 
 class PetitBateau(Vehicule):
     def __init__(self):
         super().__init__(
-            taille_equipe=4,
+            taille_equipe=3,
             conditions={
                 Qualification.CHEF_PE: 1,
                 Qualification.COND_B: 1,  # Conducteur bateau
-                Qualification.SUAP: 2  # 2 sauveteurs
+                Qualification.SUAP: 1  # 2 sauveteurs
             }
         )
 
 class GrandBateau(Vehicule):
     def __init__(self):
         super().__init__(
-            taille_equipe=6,
+            taille_equipe=4,
             conditions={
                 Qualification.CHEF_ME: 1,
                 Qualification.COND_C: 1,  # Conducteur bateau
-                Qualification.SUAP: 4  # 4 sauveteurs
+                Qualification.SUAP: 2  # 4 sauveteurs
             }
         )
 

@@ -5,12 +5,17 @@ from typing import List, Tuple, Final, Optional
 
 from ortools.sat.python import cp_model
 
+from build.lib.entities.planning import PlanningFinalizationDto
 from src.entities.firefighter import FirefighterFilters
 from src.entities.firefighter_training import FirefighterTrainingFilters
+from src.entities.planning import PlanningUpdateDto, PlanningStatus
 from src.entities.pompier import Qualification, Pompier, Grade
+from src.entities.shift_assignment import ShiftAssignmentCreationDto
+from src.entities.shift_assignment import ShiftType
 from src.entities.vehicle import VehicleFilters
 from src.entities.vehicule import Vehicule
 from src.utils.remote_client import remote_client
+from src.entities.availability_slot import  Weekday
 
 _OUTPUT_DIR: Final = Path("output")
 
@@ -139,6 +144,30 @@ def _create_variables(model, pompiers):
                 f"travail_p{p.pompier_id}_j{j}"
             )
     return X
+def create_role_assignments(model, pompiers, vehicules):
+    """
+    Y[p, v, r, j] = 1 si le pompier p
+    est affecté au rôle r
+    sur le véhicule v
+    le jour j
+    """
+    Y = {}
+
+    for p in pompiers:
+        for v_idx, v in enumerate(vehicules):
+            for r_idx, role in enumerate(v.roles):
+                for j in _WEEK_DAYS:
+                    if p.a_qualification(role):
+                        Y[p, v_idx, r_idx, j] = model.NewBoolVar(
+                            f"Y_p{p.pompier_id}_v{v_idx}_r{r_idx}_j{j}"
+                        )
+                        print("1")
+                    else:
+                        # impossible → forcé à 0
+                        Y[p, v_idx, r_idx, j] = model.NewConstant(0)
+                        print("0")
+
+    return Y
 
 
 # =====================================================
@@ -164,50 +193,117 @@ def add_contrainte_presence_journaliere(model, X, pompiers):
             sum(X[p, j] for p in pompiers) >= _MIN_FIREFIGHTERS_PER_DAY
         )
 
+def add_contrainte_un_role_par_jour(model, Y, pompiers, vehicules):
+    for p in pompiers:
+        for j in _WEEK_DAYS:
+            model.Add(
+                sum(
+                    Y[p, v_idx, r_idx, j]
+                    for v_idx, v in enumerate(vehicules)
+                    for r_idx, _ in enumerate(v.roles)
+                ) <= 1
+            )
+def add_contrainte_presence_role(model, X, Y, pompiers, vehicules):
+    for p in pompiers:
+        for v_idx, v in enumerate(vehicules):
+            for r_idx, _ in enumerate(v.roles):
+                for j in _WEEK_DAYS:
+                    model.Add(Y[p, v_idx, r_idx, j] <= X[p,j])
+
+
+def add_contrainte_roles_vehicules(model, Y, pompiers, vehicules):
+    """
+    Contrainte : Un véhicule est soit complètement armé, soit vide.
+    Pas de véhicules partiellement armés.
+    """
+    for v_idx, v in enumerate(vehicules):
+        for j in _WEEK_DAYS:
+            # Variable : ce véhicule est-il opérationnel ce jour ?
+            vehicule_actif = model.NewBoolVar(f"vehicule_{v_idx}_actif_j{j}")
+
+            # Pour chaque rôle
+            for r_idx, role in enumerate(v.roles):
+                nb_pompiers = sum(Y[p, v_idx, r_idx, j] for p in pompiers)
+
+                # Si véhicule actif : exactement 1 pompier par rôle
+                # Si véhicule inactif : 0 pompier par rôle
+                model.Add(nb_pompiers == 1).OnlyEnforceIf(vehicule_actif)
+                model.Add(nb_pompiers == 0).OnlyEnforceIf(vehicule_actif.Not())
+
+
 
 # =====================================================
 # 4) Objectif (équilibrer les jours travaillés)
 # =====================================================
 
-def add_soft_contrainte_vehicules(model, X, pompiers, vehicules):
+def add_soft_contrainte_completion_vehicules(model, X, pompiers, vehicules):
     """
-    Contrainte SOFT :
-    On souhaite avoir chaque jour suffisamment de pompiers présents
-    pour pouvoir armer tous les véhicules de la caserne en même temps.
-
-    Si ce n'est pas possible, on autorise un manque (pénalité),
-    que le solveur devra minimiser.
+    Contrainte SOFT qui valorise la complétion de chaque véhicule.
+    Pour chaque véhicule et chaque jour, on vérifie si on peut le compléter.
     """
+    HIERARCHIE_CHEFS = {
+        Qualification.CHEF_PE: [Qualification.CHEF_PE],
+        Qualification.CHEF_ME: [Qualification.CHEF_PE, Qualification.CHEF_ME],
+        Qualification.CHEF_GE: [Qualification.CHEF_PE, Qualification.CHEF_ME, Qualification.CHEF_GE]
+    }
 
-    manques = []
+    # Variables pour le manque de chaque véhicule chaque jour
+    manques_vehicules = []
 
-    # Nombre total de pompiers nécessaires pour armer TOUS les véhicules
-    # (somme des tailles d'équipe de chaque véhicule)
-    besoin_total = sum(v.taille_equipe for v in vehicules)
+    for v_idx, vehicule in enumerate(vehicules):
+        vehicule_manques_jour = []
 
-    for j in _WEEK_DAYS:
-        # Variable = nombre de pompiers présents le jour j
-        presents = model.NewIntVar(
-            0, len(pompiers), f"presents_j{j}"
-        )
-        model.Add(presents == sum(X[p, j] for p in pompiers))
+        for j in _WEEK_DAYS:
+            # Variable booléenne : véhicule complet ce jour ?
+            vehicule_complet = model.NewBoolVar(f"vehicule_{v_idx}_complet_j{j}")
 
-        # Variable = manque de pompiers le jour j
-        # (0 si on a assez de monde, >0 sinon)
-        manque = model.NewIntVar(
-            0, besoin_total, f"manque_j{j}"
-        )
+            # Variables pour vérifier chaque condition de qualification
+            conditions_remplies = []
 
-        # Contrainte souple :
-        # présents + manque >= besoin total
-        # => si présents < besoin, le manque absorbe la différence
-        model.Add(presents + manque >= besoin_total)
+            # Pour chaque qualification requise par le véhicule
+            for qualif, nombre_requis in vehicule.conditions.items():
+                # Déterminer les qualifications valides (avec hiérarchie pour les chefs)
+                if qualif in HIERARCHIE_CHEFS:
+                    qualifications_valides = HIERARCHIE_CHEFS[qualif]
+                else:
+                    qualifications_valides = [qualif]
 
-        # On stocke le manque pour l'objectif global
-        manques.append(manque)
+                # Compter les pompiers disponibles avec qualification valide
+                disponibles_expr = []
+                for p in pompiers:
+                    for q_valide in qualifications_valides:
+                        if p.a_qualification(q_valide):
+                            disponibles_expr.append(X[p, j])
+                            break  # Un pompier ne compte qu'une fois
 
-    return manques
+                # Variable pour vérifier si la condition est remplie
+                condition_ok = model.NewBoolVar(f"vehicule_{v_idx}_cond_{qualif.name}_j{j}")
 
+                if disponibles_expr:
+                    # Créer une contrainte : condition_ok = 1 si sum(disponibles_expr) >= nombre_requis
+                    model.Add(sum(disponibles_expr) >= nombre_requis).OnlyEnforceIf(condition_ok)
+                    model.Add(sum(disponibles_expr) < nombre_requis).OnlyEnforceIf(condition_ok.Not())
+                else:
+                    model.Add(condition_ok == 0)
+
+                conditions_remplies.append(condition_ok)
+
+            # Le véhicule est complet si TOUTES ses conditions sont remplies
+            if conditions_remplies:
+                model.AddBoolAnd(conditions_remplies).OnlyEnforceIf(vehicule_complet)
+                model.AddBoolOr([c.Not() for c in conditions_remplies]).OnlyEnforceIf(vehicule_complet.Not())
+            else:
+                model.Add(vehicule_complet == 1)  # Si pas de conditions, toujours complet
+
+            # Variable de manque : 0 si complet, 1 si incomplet
+            manque = model.NewBoolVar(f"vehicule_{v_idx}_manque_j{j}")
+            model.Add(manque == 1 - vehicule_complet)
+
+            vehicule_manques_jour.append(manque)
+
+        manques_vehicules.extend(vehicule_manques_jour)
+
+    return manques_vehicules
 
 def add_objective_equilibre(model, X, pompiers, manques):
     """
@@ -259,6 +355,18 @@ def add_objective_equilibre(model, X, pompiers, manques):
         10 * sum(manques) + sum(ecarts)
     )
 
+def add_contrainte_roles_vehicules_souple(model, Y, pompiers, vehicules):
+    """
+    VERSION SOUPLE : Chaque rôle peut avoir 0 OU 1 pompier
+    (au lieu de forcer exactement 1)
+    """
+    for v_idx, v in enumerate(vehicules):
+        for r_idx, _ in enumerate(v.roles):
+            for j in _WEEK_DAYS:
+                # Maximum 1 pompier par rôle (mais peut être 0)
+                model.Add(
+                    sum(Y[p, v_idx, r_idx, j] for p in pompiers) <= 1
+                )
 
 def add_soft_contrainte_qualifications_avec_hierarchie(model, X, pompiers, vehicules):
     """
@@ -329,217 +437,485 @@ def add_soft_contrainte_qualifications_avec_hierarchie(model, X, pompiers, vehic
 # =====================================================
 # 5) Solve et affichage
 # =====================================================
-
-def add_objective_complet(model, X, pompiers, manques_vehicules, manques_qualifs):
+def add_objectif_maximiser_vehicules(model, X, Y, pompiers, vehicules):
     """
-    Objectif complet avec les 3 contraintes soft.
+    Objectif : maximiser le nombre de véhicules opérationnels
     """
-    # Calcul des écarts d'équité
-    totaux = {
-        p: model.NewIntVar(0, 7, f"total_p{p.pompier_id}")
-        for p in pompiers
-    }
 
+    # 1. Compter les véhicules actifs
+    vehicules_actifs = []
+
+    for v_idx, v in enumerate(vehicules):
+        for j in _WEEK_DAYS:
+            # Un véhicule est actif si tous ses rôles sont remplis
+            tous_roles_ok = []
+
+            for r_idx in range(len(v.roles)):
+                nb_pompiers = sum(Y[p, v_idx, r_idx, j] for p in pompiers)
+                role_ok = model.NewBoolVar(f"role_{v_idx}_{r_idx}_ok_j{j}")
+
+                model.Add(nb_pompiers == 1).OnlyEnforceIf(role_ok)
+                model.Add(nb_pompiers != 1).OnlyEnforceIf(role_ok.Not())
+
+                tous_roles_ok.append(role_ok)
+
+            vehicule_ok = model.NewBoolVar(f"vehicule_{v_idx}_ok_j{j}")
+            model.AddBoolAnd(tous_roles_ok).OnlyEnforceIf(vehicule_ok)
+            model.AddBoolOr([r.Not() for r in tous_roles_ok]).OnlyEnforceIf(vehicule_ok.Not())
+
+            vehicules_actifs.append(vehicule_ok)
+
+    # 2. Équité entre pompiers
+    totaux = {p: model.NewIntVar(0, 7, f"total_p{p.pompier_id}") for p in pompiers}
     for p in pompiers:
         model.Add(totaux[p] == sum(X[p, j] for j in _WEEK_DAYS))
 
-    moyenne = 5
     ecarts = []
-
+    moyenne = 5
     for p in pompiers:
         ecart = model.NewIntVar(0, 7, f"ecart_p{p.pompier_id}")
         model.Add(ecart >= totaux[p] - moyenne)
         model.Add(ecart >= moyenne - totaux[p])
         ecarts.append(ecart)
 
-    model.Minimize(
-        1000 * sum(manques_qualifs) +  # Priorité MAX : qualifications
-        100 * sum(manques_vehicules) +  # Priorité haute : véhicules
-        1 * sum(ecarts)  # Priorité basse : équité
+    # Objectif combiné
+    model.Maximize(
+        1000 * sum(vehicules_actifs) -  # Priorité : véhicules complets
+        1 * sum(ecarts)  # Secondaire : équité
     )
 
 
-def run_solver(model, X, pompiers, vehicules, output_file=None):
-    solver = cp_model.CpSolver()
+# =====================================================
+# CORRECTION COMPLÈTE DU RUN_SOLVER
+# =====================================================
 
-    # Optionnel : paramètres pour accélérer la résolution
+# =====================================================
+# CORRECTION COMPLÈTE DU RUN_SOLVER
+# =====================================================
+
+def run_solver(
+        model,
+        X,
+        Y,
+        pompiers,
+        vehicules,
+        output_file=None
+) -> List[ShiftAssignmentCreationDto]:
+    solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = 30.0
     solver.parameters.num_search_workers = 8
 
     status = solver.Solve(model)
 
-    jours_noms = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
+    print(f"\n=== STATUT DU SOLVEUR : {solver.StatusName(status)} ===")
+    print(f"Temps de résolution: {solver.WallTime():.2f}s")
 
-    # Calculer les statistiques
-    stats = {
-        "jours_travailles": {p: 0 for p in pompiers},
-        "presents_par_jour": {j: 0 for j in _WEEK_DAYS},
-        "manque_total": 0,
-        "pourcentages_jour": {j: 0 for j in _WEEK_DAYS}
-    }
+    if status not in [cp_model.OPTIMAL, cp_model.FEASIBLE]:
+        print("❌ AUCUNE SOLUTION TROUVÉE")
+        print(f"   Raison possible: contraintes incompatibles")
+        return []
 
-    # Données par pompier
-    textes_stats_pompiers = []
+    jours_noms = [
+        Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
+        Weekday.THURSDAY, Weekday.FRIDAY, Weekday.SATURDAY, Weekday.SUNDAY
+    ]
+
+    # ----------------------------
+    # 1. VÉRIFIER LES VALEURS DE Y
+    # ----------------------------
+    print("\n=== VÉRIFICATION DES ASSIGNATIONS Y ===")
+    total_Y_assignes = 0
+
+    for (p, v_idx, r_idx, j), var in Y.items():
+        val = solver.Value(var)
+        if val == 1:
+            total_Y_assignes += 1
+            vehicule = vehicules[v_idx]
+            role = vehicule.roles[r_idx]
+            print(f"✓ Jour {jours_noms[j].name}: {p.prenom} {p.nom} → "
+                  f"{type(vehicule).__name__} [rôle {role.name}]")
+
+    print(f"\nTOTAL: {total_Y_assignes} assignations Y trouvées")
+
+    if total_Y_assignes == 0:
+        print("\n⚠️  PROBLÈME: Aucune assignation Y trouvée!")
+        print("   Vérifiez les contraintes sur Y")
+
+    # ----------------------------
+    # 2. CRÉER LES SHIFT ASSIGNMENTS
+    # ----------------------------
+    shift_assignments: List[ShiftAssignmentCreationDto] = []
+    planning_lignes = []
+
     for p in pompiers:
-        ligne = f"{p.prenom + " " + p.nom:20} : "
-        total = 0
-        for j in _WEEK_DAYS:
+        ligne = f"{p.prenom} {p.nom:15} : "
+        for j in range(7):
             travaille = solver.Value(X[p, j])
-            ligne += "⬜ " if travaille else "🟥 "
-            total += travaille
-            stats["presents_par_jour"][j] += travaille
-        stats["jours_travailles"][p] = total
-        textes_stats_pompiers.append(ligne + f" {total:3}")
 
-    # Calcul du besoin total pour l'armement
-    besoin_total = sum(v.taille_equipe for v in vehicules)
+            if travaille:
+                ligne += "⬜ "
+                shift_type = ShiftType.ON_SHIFT
+            else:
+                ligne += "🟥 "
+                shift_type = ShiftType.OFF_DUTY
 
-    # Calcul du pourcentage de couverture par jour
-    pourcentages = []
-    textes_pourcentages = []
+            shift_assignments.append(
+                ShiftAssignmentCreationDto(
+                    weekday=jours_noms[j],
+                    shiftType=shift_type,
+                    firefighterId=p.pompier_id
+                )
+            )
 
-    for j in _WEEK_DAYS:
-        presents = stats["presents_par_jour"][j]
-        manque = max(0, besoin_total - presents)
-        stats["manque_total"] += manque
-        pourcentage = (presents / besoin_total * 100) if besoin_total > 0 else 100
-        stats["pourcentages_jour"][j] = pourcentage
+        planning_lignes.append(ligne)
 
-        pourcentages.append(pourcentage)
-        textes_pourcentages.append(f"{jours_noms[j]:10} {presents:10} {besoin_total:10} {manque:10} {pourcentage:8.1f}%")
+    # ----------------------------
+    # 3. COMPOSITION RÉELLE DES VÉHICULES
+    # ----------------------------
+    def determiner_composition_vehicules(jour):
+        composition = []
 
-    # CALCUL MOYENNE
-    pourcentage_moyen = sum(pourcentages) / len(pourcentages) if pourcentages else 0
+        for v_idx, vehicule in enumerate(vehicules):
+            equipage = []
+            roles_assignes = set()
 
-    if output_file is not None:
-        with open(_OUTPUT_DIR / output_file, 'w', encoding='utf-8') as f:
+            # Parcourir TOUTES les variables Y pour ce véhicule ce jour
+            for p in pompiers:
+                for r_idx, role in enumerate(vehicule.roles):
+                    if solver.Value(Y[p, v_idx, r_idx, jour]) == 1:
+                        equipage.append((p, role))
+                        roles_assignes.add(r_idx)
+
+            # Calculer les rôles manquants
+            manquants = {}
+            for r_idx, role in enumerate(vehicule.roles):
+                if r_idx not in roles_assignes:
+                    role_name = role.name
+                    manquants[role_name] = manquants.get(role_name, 0) + 1
+
+            composition.append({
+                "vehicule": type(vehicule).__name__,
+                "complet": len(manquants) == 0,
+                "equipage": equipage,
+                "manquants": manquants,
+                "roles_totaux": len(vehicule.roles),
+                "roles_remplis": len(roles_assignes)
+            })
+
+        return composition
+
+    # ----------------------------
+    # 4. ÉCRITURE DU FICHIER
+    # ----------------------------
+    if output_file:
+        with open(_OUTPUT_DIR / output_file, "w", encoding="utf-8") as f:
             f.write("PLANNING HEBDOMADAIRE\n")
             f.write("=" * 60 + "\n\n")
 
-            f.write(f"Statut de la résolution: {solver.StatusName(status)}\n")
-            f.write(f"Score optimal: {solver.ObjectiveValue()}\n\n")
-
-            f.write("Répartition des pompiers par jour :\n")
-            f.write("-" * 40 + "\n")
-
-            # En-tête des jours
-            f.write(f"{'Pompier':20}")
-            for j in _WEEK_DAYS:
-                f.write(f"{jours_noms[j]:4}")
-            f.write(" Total\n")
-            f.write("-" * 70 + "\n")
-
-            for ligne in textes_stats_pompiers:
+            f.write("RÉPARTITION DES POMPIERS\n")
+            f.write("-" * 60 + "\n")
+            for ligne in planning_lignes:
                 f.write(ligne + "\n")
 
             f.write("\n" + "=" * 60 + "\n")
-            f.write("STATISTIQUES\n")
-            f.write("=" * 60 + "\n\n")
 
-            # Statistiques par jour
-            f.write("Présence quotidienne et armement des véhicules :\n")
-            f.write("-" * 60 + "\n")
-            f.write(f"{'Jour':10} {'Présents':10} {'Besoin':10} {'Manque':10} {'% couverture'}\n")
-            f.write("-" * 60 + "\n")
+            for j in range(7):
+                f.write(f"\n{jours_noms[j].name}\n")
+                f.write("-" * 40 + "\n")
 
-            for j in _WEEK_DAYS:
-                f.write(textes_pourcentages[j] + "\n")
+                compositions = determiner_composition_vehicules(j)
 
-            f.write(f"{'MOYENNE':10} {'':10} {'':10} {'':10} {pourcentage_moyen:8.1f}%\n")
+                for comp in compositions:
+                    statut = "✓ COMPLET" if comp["complet"] else "✗ INCOMPLET"
+                    f.write(f"\n{comp['vehicule']} ({statut}) - "
+                            f"{comp['roles_remplis']}/{comp['roles_totaux']} rôles\n")
 
+                    if comp["equipage"]:
+                        for p, role in comp["equipage"]:
+                            f.write(f"  ✓ {p.prenom} {p.nom} [{role.name}]\n")
+                    else:
+                        f.write("  (aucun pompier assigné)\n")
+
+                    if comp["manquants"]:
+                        f.write("  Manquants: ")
+                        f.write(", ".join(f"{n} {q}" for q, n in comp["manquants"].items()))
+                        f.write("\n")
+
+            # ----------------------------
+            # STATISTIQUES GLOBALES
+            # ----------------------------
             f.write("\n" + "=" * 60 + "\n")
-            f.write("RÉPARTITION DES JOURS DE TRAVAIL\n")
-            f.write("=" * 60 + "\n\n")
-
-            # Calcul de la distribution
-            distribution = {i: 0 for i in range(8)}
-            for p in pompiers:
-                jours_p = stats["jours_travailles"][p]
-                distribution[jours_p] = distribution.get(jours_p, 0) + 1
-
-            f.write(f"{'Jours/semaine':15} {'Nb pompiers':12} {'%':10}\n")
+            f.write("STATISTIQUES\n")
             f.write("-" * 40 + "\n")
 
-            total_pompiers = len(pompiers)
-            for jours_semaine in sorted(distribution.keys()):
-                nb = distribution[jours_semaine]
-                pourcentage = (nb / total_pompiers * 100)
-                f.write(f"{jours_semaine:15} {nb:12} {pourcentage:9.1f}%\n")
+            total_roles = sum(len(v.roles) for v in vehicules) * 7
+            roles_remplis = sum(
+                1 for (p, v_idx, r_idx, j), var in Y.items()
+                if solver.Value(var) == 1
+            )
 
-            # Informations sur les véhicules
-            f.write("\n" + "=" * 60 + "\n")
-            f.write("VÉHICULES DE LA CASERNE\n")
-            f.write("=" * 60 + "\n\n")
+            f.write(f"Rôles assignés: {roles_remplis}/{total_roles} "
+                    f"({100 * roles_remplis / total_roles:.1f}%)\n")
 
-            f.write(f"Nombre total de véhicules: {len(vehicules)}\n")
-            f.write(f"Besoin total en personnel pour armement: {besoin_total} pompiers\n\n")
+            # Véhicules complets par jour
+            for j in range(7):
+                compositions = determiner_composition_vehicules(j)
+                complets = sum(1 for c in compositions if c["complet"])
+                f.write(f"{jours_noms[j].name}: {complets}/{len(vehicules)} "
+                        f"véhicules complets\n")
 
-            f.write("Détail par type de véhicule :\n")
-            f.write("-" * 50 + "\n")
+    return shift_assignments
 
-            compteur = {}
-            for v in vehicules:
-                type_name = v.__class__.__name__
-                compteur[type_name] = compteur.get(type_name, 0) + 1
 
-            for type_name, count in compteur.items():
-                taille_equipe = vehicules[0].taille_equipe if any(
-                    isinstance(v, type(vehicules[0])) for v in vehicules) else 0
-                f.write(f"{type_name:20} : {count:3} véhicule(s), taille équipe: {taille_equipe}\n")
+# =====================================================
+# DIAGNOSTIC AMÉLIORÉ
+# =====================================================
 
-        print(f"\n✅ Planning généré dans : {output_file}")
-        print(f"📊 Statistiques sauvegardées dans le fichier")
+def diagnostic_complet(model, X, Y, pompiers, vehicules):
+    """
+    Diagnostic approfondi du problème
+    """
+    print("\n" + "=" * 60)
+    print("DIAGNOSTIC COMPLET")
+    print("=" * 60)
 
-    # Affichage rapide dans la console
-    print(f"\nRésumé :")
-    print(f"  - Pompiers présents en moyenne : {sum(stats['presents_par_jour'].values()) / 7:.1f}/jour")
-    print(f"  - Manque total de personnel : {stats['manque_total']} jours-pompier")
-    print(f"  - Besoin pour armement complet : {besoin_total} pompiers/jour")
-    print(f"  - Pourcentage moyen de complétion : {pourcentage_moyen:.1f}%")
+    # 1. Variables Y
+    Y_vars = sum(1 for var in Y.values() if not isinstance(var, int))
+    Y_constants = sum(1 for var in Y.values() if isinstance(var, int))
+    print(f"\n1. VARIABLES Y")
+    print(f"   Variables (non-constantes): {Y_vars}")
+    print(f"   Constantes (à 0): {Y_constants}")
+    print(f"   Total: {len(Y)}")
+
+    # 1b. Vérifier la structure de Y
+    print(f"\n   Exemple de clés Y:")
+    for i, (key, var) in enumerate(Y.items()):
+        if i >= 3:
+            break
+        p, v_idx, r_idx, j = key
+        var_type = "Variable" if not isinstance(var, int) else "Constante"
+        print(f"   {var_type}: pompier={p.nom}, véhicule={v_idx}, rôle={r_idx}, jour={j}")
+
+    # 2. Ressources critiques
+    print(f"\n2. RESSOURCES CRITIQUES")
+    qualifs_rares = {}
+    for v in vehicules:
+        for role in v.roles:
+            qualifs = [p for p in pompiers if p.a_qualification(role)]
+            if len(qualifs) <= 2:  # Ressource rare
+                qualifs_rares[role.name] = len(qualifs)
+
+    if qualifs_rares:
+        print("   ⚠️  Qualifications rares:")
+        for qual, nb in sorted(qualifs_rares.items(), key=lambda x: x[1]):
+            print(f"      {qual}: {nb} pompiers")
+
+    # 3. Besoins vs disponibilité
+    print(f"\n3. BESOINS PAR QUALIFICATION (par jour)")
+    besoins = {}
+    for v in vehicules:
+        for role in v.roles:
+            besoins[role.name] = besoins.get(role.name, 0) + 1
+
+    for qual_name, besoin in sorted(besoins.items()):
+        dispo = sum(1 for p in pompiers if p.a_qualification(
+            Qualification[qual_name]))
+        ratio = dispo / besoin if besoin > 0 else 0
+        status = "✓" if ratio >= 1 else "⚠️"
+        print(f"   {status} {qual_name}: besoin={besoin}, dispo={dispo} "
+              f"(ratio={ratio:.1f})")
+
+    # 4. Conflits potentiels
+    print(f"\n4. CONFLITS POTENTIELS")
+    for qual_name, besoin in besoins.items():
+        dispo = sum(1 for p in pompiers if p.a_qualification(
+            Qualification[qual_name]))
+        if dispo < besoin:
+            print(f"   ❌ {qual_name}: IMPOSSIBLE d'armer tous les véhicules")
+            print(f"      → besoin de {besoin - dispo} pompiers supplémentaires")
+
+    print("\n" + "=" * 60 + "\n")
+
+
+# =====================================================
+# FONCTION DE TEST DE L'OBJECTIF
+# =====================================================
+
+def tester_objectif_Y(model, X, Y, pompiers, vehicules):
+    """
+    Test pour vérifier que l'objectif fonctionne
+    """
+    print("\n=== TEST DE L'OBJECTIF ===")
+
+    # Compter les variables non-constantes
+    Y_reelles = [var for var in Y.values() if not isinstance(var, int)]
+    print(f"Variables Y non-constantes: {len(Y_reelles)}")
+
+    if len(Y_reelles) == 0:
+        print("❌ PROBLÈME: Aucune variable Y à maximiser!")
+        print("   Toutes les variables Y sont des constantes à 0")
+        return
+
+    # Vérifier qu'on peut construire l'objectif
+    try:
+        objectif = sum(Y_reelles)
+        print(f"✓ Objectif construit: sum de {len(Y_reelles)} variables")
+    except Exception as e:
+        print(f"❌ Erreur lors de la construction de l'objectif: {e}")
+        return
+
+    # Vérifier les contraintes qui pourraient bloquer Y
+    print("\n=== VÉRIFICATION DES CONTRAINTES BLOQUANTES ===")
+
+    # Test: Y peut-il être > 0 ?
+    for j in [0]:  # Tester juste le premier jour
+        print(f"\nJour {j}:")
+        for v_idx, vehicule in enumerate(vehicules):
+            print(f"  Véhicule {v_idx} ({type(vehicule).__name__}):")
+            for r_idx, role in enumerate(vehicule.roles):
+                # Chercher les pompiers qui peuvent prendre ce rôle
+                candidats = []
+                for p in pompiers:
+                    key = (p, v_idx, r_idx, j)
+                    if key in Y and not isinstance(Y[key], int):
+                        candidats.append(p.nom)
+
+                if candidats:
+                    print(f"    Rôle {r_idx} ({role.name}): {len(candidats)} candidats possibles")
+                else:
+                    print(f"    Rôle {r_idx} ({role.name}): ❌ AUCUN candidat (variables constantes)")
+
+    print("\n" + "=" * 60)
+
+def run_solver_debug(model, X, Y, pompiers, vehicules, output_file=None):
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = 30.0
+    solver.parameters.num_search_workers = 8
+
+    status = solver.Solve(model)
+
+    if status != cp_model.OPTIMAL and status != cp_model.FEASIBLE:
+        print(f"Aucune solution réalisable trouvée ! Status={status}")
+
+    jours_noms = [
+        Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
+        Weekday.THURSDAY, Weekday.FRIDAY, Weekday.SATURDAY, Weekday.SUNDAY
+    ]
+
+    # 1. Vérifier X
+    print("\n=== Debug : Shifts X ===")
+    for p in pompiers:
+        ligne = f"{p.prenom} {p.nom:15}: "
+        for j in _WEEK_DAYS:
+            val = solver.Value(X[p, j])
+            ligne += f"{val} "
+        print(ligne)
+
+    # 2. Vérifier Y : candidats possibles pour chaque rôle
+    print("\n=== Debug : Rôles Y ===")
+    for j in _WEEK_DAYS:
+        print(f"\n--- Jour {jours_noms[j].name} ---")
+        for v_idx, vehicule in enumerate(vehicules):
+            print(f"Véhicule {v_idx} ({type(vehicule).__name__})")
+            for r_idx, role in enumerate(vehicule.roles):
+                candidats = [p for p in pompiers if p.a_qualification(role)]
+                val_assigned = [p for p in pompiers if solver.Value(Y[p, v_idx, r_idx, j])]
+                print(f"  Rôle {r_idx} ({role.name}): candidats={len(candidats)}, assigné={len(val_assigned)}")
+                if len(val_assigned) == 0:
+                    print(f"    => Aucun pompier assigné !")
+
+    # 3. Composition des véhicules comme avant
+    def determiner_composition_vehicules(jour):
+        composition = []
+        for v_idx, vehicule in enumerate(vehicules):
+            equipage = []
+            manquants = {}
+            for r_idx, role in enumerate(vehicule.roles):
+                assignes = [p for p in pompiers if solver.Value(Y[p, v_idx, r_idx, jour])]
+                if assignes:
+                    for p in assignes:
+                        equipage.append((p, role))
+                else:
+                    manquants[role.name] = 1
+            composition.append({
+                "vehicule": type(vehicule).__name__,
+                "complet": len(manquants) == 0,
+                "equipage": equipage,
+                "manquants": manquants
+            })
+        return composition
+
+    # 4. Affichage composition véhicules
+    for j in _WEEK_DAYS:
+        print(f"\n=== Composition véhicules jour {jours_noms[j].name} ===")
+        compositions = determiner_composition_vehicules(j)
+        for comp in compositions:
+            print(f"{comp['vehicule']} : complet={comp['complet']}, manquants={comp['manquants']}")
+
+    return None
+
+
 
 @track_emissions()
 async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
-    try:
-        firefighters, vehicles = await _get_data(planning_id)
-    except Exception as e:
-        print(f"Error fetching data for planning ID {planning_id}: {e}", file=sys.stderr)
-        sys.exit(1)
+    firefighters, vehicles = await _get_data(planning_id)
 
     model = cp_model.CpModel()
-
-    # ----------------------------
-    # Variables
-    # ----------------------------
     X = _create_variables(model, firefighters)
+    Y = create_role_assignments(model, firefighters, vehicles)
 
-    # ----------------------------
+    # Diagnostic
+    diagnostic_complet(model, X, Y, firefighters, vehicles)
+
     # Contraintes HARD
-    # ----------------------------
     add_contrainte_max_jours(model, X, firefighters)
-
     add_contrainte_consecutifs(model, X, firefighters)
-
     add_contrainte_presence_journaliere(model, X, firefighters)
+    add_contrainte_un_role_par_jour(model, Y, firefighters, vehicles)
+    add_contrainte_presence_role(model, X, Y, firefighters, vehicles)
 
-    # ----------------------------
-    # Contrainte SOFT 1 : Véhicules
-    # ----------------------------
-    manques_vehicules = add_soft_contrainte_vehicules(model, X, firefighters, vehicles)
+    # ✓ Nouvelle contrainte : véhicules complets ou vides
+    add_contrainte_roles_vehicules(model, Y, firefighters, vehicles)
 
-    # ----------------------------
-    # Contrainte SOFT 2 : Qualifications
-    # ----------------------------
-    manques_qualifs, _ = add_soft_contrainte_qualifications_avec_hierarchie(model, X, firefighters, vehicles)
+    # ✓ Nouvel objectif : maximiser véhicules opérationnels
+    add_objectif_maximiser_vehicules(model, X, Y, firefighters, vehicles)
 
-    # ----------------------------
-    # Objectif global
-    # ----------------------------
-    add_objective_complet(model, X, firefighters, manques_vehicules, manques_qualifs)
-
-    # ----------------------------
     # Résolution
-    # ----------------------------
-    run_solver(model, X, firefighters, vehicles, output_file)
+    shifts_assignment = run_solver(model, X, Y, firefighters, vehicles, output_file)
+
+    if shifts_assignment:
+        await remote_client.finalize_planning(planning_id=planning_id,
+                                              planning_finalization_dto=PlanningFinalizationDto(
+                                                  shiftAssignments=shifts_assignment))
+        await remote_client.update_planning(planning_id=planning_id,
+                                            planning_update_dto=PlanningUpdateDto(status=PlanningStatus.FINALIZED))
+        print("✓ Planning finalisé")
+    else:
+        print("❌ Pas de solution trouvée")
+
+# =====================================================
+# DIAGNOSTIC SUPPLÉMENTAIRE
+# =====================================================
+
+def diagnostic_Y(model, X, Y, pompiers, vehicules):
+    """
+    Fonction pour diagnostiquer pourquoi Y reste à 0
+    """
+    print("\n=== DIAGNOSTIC Y ===")
+
+    # Vérifier si des variables Y existent
+    total_Y = sum(1 for var in Y.values() if not isinstance(var, int))
+    print(f"Variables Y créées (non-constantes): {total_Y}")
+
+    # Vérifier les qualifications
+    for v_idx, v in enumerate(vehicules):
+        print(f"\nVéhicule {v_idx} ({type(v).__name__}):")
+        for r_idx, role in enumerate(v.roles):
+            candidats = [p for p in pompiers if p.a_qualification(role)]
+            print(f"  Rôle {role.name}: {len(candidats)} pompiers qualifiés")
+            if len(candidats) == 0:
+                print(f"    ⚠️  AUCUN POMPIER QUALIFIÉ POUR CE RÔLE!")
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 or len(sys.argv) == 3:

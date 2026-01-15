@@ -6,9 +6,12 @@ from src.entities.vehicle import VehicleType
 class Vehicule:
     def __init__(self, taille_equipe: int = 0, conditions: Optional[Dict[Qualification, int]] = None):
         self.taille_equipe: int = taille_equipe
-        self.conditions: Dict[Qualification, int] = conditions or {}
+        self.conditions = conditions
         self.caserne_id: Optional[str] = None
         self.vehicule_id: Optional[str] = None
+        self.roles: list[Qualification] = []
+        for qualif, nb in conditions.items():
+            self.roles.extend([qualif] * nb)
 
     @staticmethod
     def from_vehicle_type(vehicle_type: VehicleType) -> 'Vehicule':

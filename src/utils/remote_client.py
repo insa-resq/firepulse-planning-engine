@@ -177,7 +177,7 @@ class _RemoteClient:
         headers = await self._get_headers()
         response = await self._client.post(
             url=f"planning-service/plannings/{planning_id}/finalize",
-            json=planning_finalization_dto.as_dict(), # !!!!!!! quoi faire ?
+            json=planning_finalization_dto.as_dict(),
             headers=headers,
             timeout=None
         )

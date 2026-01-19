@@ -58,8 +58,6 @@ class Caserne:
             Qualification.SUAP: 0,
             Qualification.INC: 0,
             Qualification.PERMIS_AVION: 0,
-            Qualification.PERMIS_HELICOPTER: 0,
-            Qualification.PERMIS_BATEAU: 0,
             Qualification.CHEF_PE: 0,
             Qualification.CHEF_ME: 0,
             Qualification.CHEF_GE: 0

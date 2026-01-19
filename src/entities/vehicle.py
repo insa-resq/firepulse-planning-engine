@@ -20,7 +20,6 @@ class Vehicle(BaseModel):
     updatedAt: datetime
     type: VehicleType
     totalCount: int
-    availableCount: int
     stationId: str
 
 class VehicleFilters(BaseModel):

@@ -10,7 +10,7 @@ from src.entities.firefighter import FirefighterFilters, Firefighter
 from src.entities.firefighter_training import FirefighterTrainingFilters, FirefighterTraining
 from src.entities.vehicle import VehicleFilters, Vehicle
 from src.entities.availability_slot import AvailabilitySlotFilters, AvailabilitySlot
-from src.entities.planning import FinalizedPlanning, PlanningFinalizationDto, PlanningUpdateDto, Planning
+from src.entities.planning import FinalizedPlanning, PlanningFinalizationDto, Planning
 from src.utils.config import settings
 
 HttpHeaders = Dict[str, str]
@@ -147,7 +147,7 @@ class _RemoteClient:
         _logger.info(f"Fetching availability slots with filters: {filters}")
         headers = await self._get_headers()
         response = await self._client.get(
-            url="registry-service/availability-slots",
+            url="planning-service/availability-slots",
             params=filters.as_dict() if filters is not None else None,
             headers=headers
         )
@@ -167,21 +167,9 @@ class _RemoteClient:
         response.raise_for_status()
         return Planning.model_validate(response.json(), extra="ignore")
 
-    async def update_planning(self, planning_id: str, planning_update_dto: PlanningUpdateDto) -> Planning:
-        """
-        Updates a planning by its ID
-        """
-        _logger.info(f"Updating planning with ID: {planning_id}")
-        headers = await self._get_headers()
-        response = await self._client.patch(
-            url=f"planning-service/plannings/{planning_id}",
-            json=planning_update_dto.as_dict(),
-            headers=headers
-        )
-        response.raise_for_status()
-        return Planning.model_validate(response.json(), extra="ignore")
 
-    async def finalize_planning(self, planning_id: str, planning_finalization_dto: PlanningFinalizationDto) -> FinalizedPlanning:
+    async def finalize_planning(self, planning_id: str, planning_finalization_dto: PlanningFinalizationDto
+                                ) -> FinalizedPlanning:
         """
         Finalizes a planning by its ID
         """
@@ -189,8 +177,9 @@ class _RemoteClient:
         headers = await self._get_headers()
         response = await self._client.post(
             url=f"planning-service/plannings/{planning_id}/finalize",
-            json=planning_finalization_dto.as_dict(),
-            headers=headers
+            json=planning_finalization_dto.as_dict(), # !!!!!!! quoi faire ?
+            headers=headers,
+            timeout=None
         )
         response.raise_for_status()
         return FinalizedPlanning.model_validate(response.json(), extra="ignore")

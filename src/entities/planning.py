@@ -4,7 +4,10 @@ from typing import List, Dict
 
 from pydantic import BaseModel
 
+from src.entities.availability_slot import Weekday
 from src.entities.shift_assignment import ShiftAssignment, ShiftAssignmentCreationDto
+
+
 
 class PlanningStatus(StrEnum):
     GENERATING = "GENERATING"
@@ -19,17 +22,20 @@ class Planning(BaseModel):
     status: PlanningStatus
     stationId: str
 
-class PlanningUpdateDto(BaseModel):
-    status: PlanningStatus
-
+class VehicleAvailabilities(BaseModel):
+    vehicleId: str
+    availableCount: int  # Il manque le jour ?
+    weekday: Weekday
     def as_dict(self) -> Dict[str, str]:
         return self.model_dump(
             exclude_unset=True,
             exclude_none=True,
+
         )
 
 class PlanningFinalizationDto(BaseModel):
     shiftAssignments: List[ShiftAssignmentCreationDto]
+    vehicleAvailabilities: List[VehicleAvailabilities]
 
     def as_dict(self) -> Dict[str, str]:
         return self.model_dump(
@@ -40,3 +46,4 @@ class PlanningFinalizationDto(BaseModel):
 class FinalizedPlanning(BaseModel):
     planning: Planning
     shiftAssignments: List[ShiftAssignment]
+

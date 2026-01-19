@@ -5,16 +5,16 @@ from typing import List, Tuple, Final, Optional
 
 from ortools.sat.python import cp_model
 
-from build.lib.entities.planning import PlanningFinalizationDto
+from src.entities.planning import PlanningFinalizationDto, VehicleAvailabilities
+from src.entities.availability_slot_firefighter import AvailabilitySlotFF
 from src.entities.firefighter import FirefighterFilters
 from src.entities.firefighter_training import FirefighterTrainingFilters
-from src.entities.planning import PlanningUpdateDto, PlanningStatus
 from src.entities.pompier import Qualification, Pompier, Grade
 from src.entities.shift_assignment import ShiftAssignmentCreationDto, ShiftType
 from src.entities.vehicle import VehicleFilters
 from src.entities.vehicule import Vehicule
 from src.utils.remote_client import remote_client
-from src.entities.availability_slot import Weekday
+from src.entities.availability_slot import Weekday, AvailabilitySlot, AvailabilitySlotFilters
 
 # =====================================================
 # CONSTANTES
@@ -67,6 +67,23 @@ async def _get_pompiers_for_station(station_id: str) -> List[Pompier]:
 
     return pompiers
 
+async def _get_availability_slot_for_firefighter_and_week(firefighter_id: str,week_number: int,year : int) -> List[AvailabilitySlotFF]:
+    availability_slots = await remote_client.get_availability_slots(
+        filters=AvailabilitySlotFilters(year=year, firefighterId=firefighter_id, weekNumber=week_number)
+    )
+
+    disponibilties = []
+    for availability_slot in availability_slots:
+
+        dispo = AvailabilitySlotFF(
+            weekday=availability_slot.weekday,
+            isAvailable=availability_slot.isAvailable,
+            firefighterId=availability_slot.firefighterId,
+
+        )
+        disponibilties.append(dispo)
+
+    return disponibilties
 
 async def _get_vehicules_for_station(station_id: str) -> List[Vehicule]:
     vehicles = await remote_client.get_vehicles(
@@ -82,7 +99,6 @@ async def _get_vehicules_for_station(station_id: str) -> List[Vehicule]:
             vehicule = Vehicule.from_vehicle_type(vehicle.type)
             vehicule.vehicule_id = f"{vehicle.id}_{i + 1}"
             vehicule.caserne_id = station_id
-            vehicule.disponible = (i < vehicle.availableCount)
             vehicule.type_name = vehicle.type
             vehicule.instance_num = i + 1
             vehicules.append(vehicule)
@@ -90,18 +106,66 @@ async def _get_vehicules_for_station(station_id: str) -> List[Vehicule]:
     return vehicules
 
 
-async def _get_data(planning_id: str) -> Tuple[List[Pompier], List[Vehicule]]:
+async def _get_availability_slots_for_all_firefighters(
+        pompiers: List[Pompier],
+        week_number: int,
+        year: int
+) -> dict[str, List[AvailabilitySlotFF]]:
+    """
+    Récupère les disponibilités de tous les pompiers pour une semaine donnée.
+
+    Returns:
+        dict[pompier_id, List[AvailabilitySlotFF]]
+    """
+    # Lancer toutes les requêtes en parallèle
+    tasks = [
+        _get_availability_slot_for_firefighter_and_week(
+            firefighter_id=p.pompier_id,
+            week_number=week_number,
+            year=year
+        )
+        for p in pompiers
+    ]
+
+    all_slots = await asyncio.gather(*tasks)
+
+    # Créer un dictionnaire pompier_id -> disponibilités
+    availability_map = {}
+    for pompier, slots in zip(pompiers, all_slots):
+        availability_map[pompier.pompier_id] = slots
+
+    return availability_map
+
+
+async def _get_data(planning_id: str) -> Tuple[List[Pompier], List[Vehicule], dict, int, int]:
+    """
+    Récupère toutes les données nécessaires au planning.
+
+    Returns:
+        (pompiers, vehicules, availability_map, week_number, year)
+    """
     planning = await remote_client.get_planning(planning_id=planning_id)
     fire_station = await remote_client.get_fire_station(station_id=planning.stationId)
 
+    # Récupérer véhicules et pompiers en parallèle
     vehicules, pompiers = await asyncio.gather(
         _get_vehicules_for_station(station_id=fire_station.id),
         _get_pompiers_for_station(station_id=fire_station.id)
     )
 
-    return pompiers, vehicules
+    # Récupérer les disponibilités de tous les pompiers
+    # ATTENTION: Vous devez récupérer week_number et year du planning !
+    # Je suppose que planning a ces attributs, sinon adaptez
+    week_number = planning.weekNumber  # À adapter selon votre modèle
+    year = planning.year  # À adapter selon votre modèle
 
+    availability_map = await _get_availability_slots_for_all_firefighters(
+        pompiers=pompiers,
+        week_number=week_number,
+        year=year
+    )
 
+    return pompiers, vehicules, availability_map, week_number, year
 # =====================================================
 # CRÉATION DES VARIABLES
 # =====================================================
@@ -205,6 +269,35 @@ def add_contrainte_presence_role(model, X, Y, pompiers, vehicules):
                 for j in _WEEK_DAYS:
                     model.Add(Y[p, v_idx, r_idx, j] <= X[p, j])
 
+
+def add_contrainte_disponibilites(model, X, pompiers, availability_map):
+    """
+    Empêche les pompiers de travailler les jours où ils sont indisponibles.
+
+    Args:
+        availability_map: dict[pompier_id, List[AvailabilitySlotFF]]
+    """
+    # Mapping Weekday -> index jour (0-6)
+    weekday_to_index = {
+        Weekday.MONDAY: 0,
+        Weekday.TUESDAY: 1,
+        Weekday.WEDNESDAY: 2,
+        Weekday.THURSDAY: 3,
+        Weekday.FRIDAY: 4,
+        Weekday.SATURDAY: 5,
+        Weekday.SUNDAY: 6
+    }
+
+    for p in pompiers:
+        # Récupérer les disponibilités de ce pompier
+        slots = availability_map.get(p.pompier_id, [])
+
+        for slot in slots:
+            # Si le pompier n'est PAS disponible ce jour
+            if not slot.isAvailable:
+                jour_index = weekday_to_index[slot.weekday]
+                # Forcer X[p, jour] = 0 (ne travaille pas)
+                model.Add(X[p, jour_index] == 0)
 
 def add_contrainte_roles_vehicules(model, Y, pompiers, vehicules):
     """Un véhicule est soit complètement armé, soit vide"""
@@ -347,9 +440,15 @@ def diagnostic_complet(model, X, Y, pompiers, vehicules):
 # =====================================================
 # RÉSOLUTION ET GÉNÉRATION DU PLANNING
 # =====================================================
+def run_solver(
+        model, X, Y, pompiers, vehicules, output_file=None
+) -> Tuple[List[ShiftAssignmentCreationDto], List[VehicleAvailabilities]]:
+    """
+    Résout le modèle et génère le planning
 
-def run_solver(model, X, Y, pompiers, vehicules, output_file=None) -> List[ShiftAssignmentCreationDto]:
-    """Résout le modèle et génère le planning"""
+    Returns:
+        (shift_assignments, vehicle_availabilities)
+    """
 
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = 30.0
@@ -362,7 +461,7 @@ def run_solver(model, X, Y, pompiers, vehicules, output_file=None) -> List[Shift
 
     if status not in [cp_model.OPTIMAL, cp_model.FEASIBLE]:
         print("❌ Aucune solution trouvée")
-        return []
+        return [], []  # ← Retourner 2 listes vides
 
     jours_noms = [
         Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
@@ -373,7 +472,7 @@ def run_solver(model, X, Y, pompiers, vehicules, output_file=None) -> List[Shift
     total_Y = sum(1 for (p, v_idx, r_idx, j), var in Y.items() if solver.Value(var) == 1)
     print(f"\nAssignations: {total_Y} rôles")
 
-    # Créer les shifts
+    # ============ CRÉER LES SHIFTS ============
     shift_assignments = []
     planning_lignes = []
 
@@ -390,12 +489,56 @@ def run_solver(model, X, Y, pompiers, vehicules, output_file=None) -> List[Shift
             ))
         planning_lignes.append(ligne)
 
+    # ============ NOUVEAU : CRÉER LES VEHICLE AVAILABILITIES ============
+    vehicle_availabilities = []
+
+    # Regrouper les véhicules par type (vehicule_id sans le suffixe _1, _2, etc.)
+    # Supposant que vehicule.vehicule_id est du format "vehicle_type_id_1", "vehicle_type_id_2"
+    vehicles_by_base_id = {}
+    for v in vehicules:
+        # Extraire l'ID de base (sans le _1, _2, etc.)
+        base_id = v.vehicule_id.rsplit('_', 1)[0] if '_' in v.vehicule_id else v.vehicule_id
+        if base_id not in vehicles_by_base_id:
+            vehicles_by_base_id[base_id] = []
+        vehicles_by_base_id[base_id].append(v)
+
+    # Pour chaque type de véhicule et chaque jour
+    for base_id, vehicle_instances in vehicles_by_base_id.items():
+        for j in range(7):
+            # Compter combien de véhicules de ce type sont opérationnels ce jour
+            available_count = 0
+
+            for v_idx, v in enumerate(vehicules):
+                if v not in vehicle_instances:
+                    continue
+
+                # Vérifier si ce véhicule est complet ce jour
+                vehicule_complet = True
+                for r_idx in range(len(v.roles)):
+                    nb_assignes = sum(
+                        solver.Value(Y[p, v_idx, r_idx, j])
+                        for p in pompiers
+                    )
+                    if nb_assignes != 1:
+                        vehicule_complet = False
+                        break
+
+                if vehicule_complet:
+                    available_count += 1
+
+            vehicle_availabilities.append(VehicleAvailabilities(
+                vehicleId=base_id,
+                availableCount=available_count,
+                weekday=jours_noms[j]
+            ))
+            print(vehicle_availabilities[-1])
+    # ============ FIN NOUVEAU CODE ============
+
     # Générer le fichier output
     if output_file:
         _write_planning_file(output_file, planning_lignes, solver, Y, pompiers, vehicules, jours_noms)
 
-    return shift_assignments
-
+    return shift_assignments, vehicle_availabilities  # ← Retourner les 2 listes
 
 def _write_planning_file(output_file, planning_lignes, solver, Y, pompiers, vehicules, jours_noms):
     """Écrit le planning détaillé dans un fichier"""
@@ -489,7 +632,7 @@ async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
     """Résout le planning et l'envoie à l'API"""
 
     # Récupération des données
-    firefighters, vehicles = await _get_data(planning_id)
+    firefighters, vehicles, availability_map,week_number,year = await _get_data(planning_id)
 
     # Création du modèle
     model = cp_model.CpModel()
@@ -503,6 +646,7 @@ async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
     add_contrainte_max_jours(model, X, firefighters)
     add_contrainte_consecutifs(model, X, firefighters)
     add_contrainte_presence_journaliere(model, X, firefighters)
+    add_contrainte_disponibilites(model, X, firefighters, availability_map)
     add_contrainte_un_role_par_jour(model, Y, firefighters, vehicles)
     add_contrainte_presence_role(model, X, Y, firefighters, vehicles)
     add_contrainte_roles_vehicules(model, Y, firefighters, vehicles)
@@ -511,19 +655,16 @@ async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
     add_objectif_maximiser_vehicules(model, X, Y, firefighters, vehicles)
 
     # Résolution
-    shifts_assignment = run_solver(model, X, Y, firefighters, vehicles, output_file)
+    shifts_assignment, vehicles_availabilities = run_solver(model, X, Y, firefighters, vehicles, output_file)
 
     # Envoi à l'API
     if shifts_assignment:
         await remote_client.finalize_planning(
             planning_id=planning_id,
             planning_finalization_dto=PlanningFinalizationDto(
-                shiftAssignments=shifts_assignment
+                shiftAssignments=shifts_assignment,
+                vehicleAvailabilities= vehicles_availabilities
             )
-        )
-        await remote_client.update_planning(
-            planning_id=planning_id,
-            planning_update_dto=PlanningUpdateDto(status=PlanningStatus.FINALIZED)
         )
         print("✓ Planning finalisé")
     else:

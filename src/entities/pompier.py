@@ -35,7 +35,7 @@ class Qualification(Enum):
 
 
 class Pompier:
-    def __init__(self, nom: str, prenom: str, station_id: str, pompier_id: int,
+    def __init__(self, nom: str, prenom: str, station_id: str, pompier_id: str,
                  grade: Grade, qualifications=None):
 
         self.nom = nom

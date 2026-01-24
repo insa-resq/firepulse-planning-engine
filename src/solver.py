@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Tuple, Final, Optional
 
 from ortools.sat.python import cp_model
-
+import codecarbon
 from src.entities.planning import PlanningFinalizationDto, VehicleAvailabilities
 from src.entities.availability_slot_firefighter import AvailabilitySlotFF
 from src.entities.firefighter import FirefighterFilters
@@ -25,14 +25,25 @@ _MAX_CONSECUTIVE_WORKING_DAYS: Final = 3  # Vraiment 3 jours max d'affilée
 _MIN_FIREFIGHTERS_PER_DAY: Final = 10
 _WEEK_DAYS: Final = list(range(7))
 
-# CodeCarbon (optionnel)
 try:
     from codecarbon import track_emissions
-
-    print("CodeCarbon disponible")
+    print("CodeCarbon is available. Tracking enabled.")
 except ImportError:
+    print("CodeCarbon not found. Tracking disabled.")
+
     def track_emissions(fn=None, **_):
-        return fn if fn else lambda f: f
+        """
+        A no-op decorator that does nothing but return the original function.
+        It handles both @track_emissions and @track_emissions(param=...) usages.
+        """
+        # Case 1: Called as @track_emissions (no parentheses)
+        if fn is not None and callable(fn):
+            return fn
+
+        # Case 2: Called as @track_emissions(...) (with parentheses/arguments)
+        def decorator(func):
+            return func
+        return decorator
 
 
 # =====================================================
@@ -443,36 +454,85 @@ def diagnostic_complet(model, X, Y, pompiers, vehicules):
 def run_solver(
         model, X, Y, pompiers, vehicules, output_file=None
 ) -> Tuple[List[ShiftAssignmentCreationDto], List[VehicleAvailabilities]]:
-    """
-    Résout le modèle et génère le planning
 
-    Returns:
-        (shift_assignments, vehicle_availabilities)
-    """
+    # =====================================================
+    # MÉTRIQUES MODÈLE (AVANT SOLVE)
+    # =====================================================
+    proto = model.Proto()
 
+    nb_vars = len(proto.variables)
+    nb_constraints = len(proto.constraints)
+
+    nb_bool_vars = sum(
+        1 for v in proto.variables if v.domain == [0, 1]
+    )
+
+    nb_linear_ct = sum(
+        1 for c in proto.constraints if c.HasField("linear")
+    )
+
+    nb_bool_or = sum(
+        1 for c in proto.constraints if c.HasField("bool_or")
+    )
+
+    nb_bool_and = sum(
+        1 for c in proto.constraints if c.HasField("bool_and")
+    )
+
+    nb_enforced = sum(
+        1 for c in proto.constraints if len(c.enforcement_literal) > 0
+    )
+
+    print("\n" + "=" * 60)
+    print("MÉTRIQUES DU MODÈLE (AVANT RÉSOLUTION)")
+    print("=" * 60)
+    print(f"Variables totales          : {nb_vars}")
+    print(f"  └─ Booléennes            : {nb_bool_vars}")
+    print(f"Contraintes totales        : {nb_constraints}")
+    print(f"  ├─ Linéaires             : {nb_linear_ct}")
+    print(f"  ├─ BoolOr                : {nb_bool_or}")
+    print(f"  ├─ BoolAnd               : {nb_bool_and}")
+    print(f"  └─ Conditionnelles       : {nb_enforced}")
+
+    # =====================================================
+    # SOLVEUR
+    # =====================================================
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = 30.0
     solver.parameters.num_search_workers = 8
 
     status = solver.Solve(model)
 
-    print(f"\n=== STATUT: {solver.StatusName(status)} ===")
-    print(f"Temps: {solver.WallTime():.2f}s")
+    # =====================================================
+    # MÉTRIQUES SOLVEUR (APRÈS RÉSOLUTION)
+    # =====================================================
+    print("\n" + "=" * 60)
+    print("MÉTRIQUES DU SOLVEUR")
+    print("=" * 60)
+    print(f"Statut                     : {solver.StatusName(status)}")
+    print(f"Temps mur                  : {solver.WallTime():.3f}s")
+    print(f"Temps CPU                  : {solver.UserTime():.3f}s")
+    print(f"Branches explorées          : {solver.NumBranches()}")
+    print(f"Conflits                   : {solver.NumConflicts()}")
+    print(f"Valeur objectif            : {solver.ObjectiveValue()}")
+    print(f"Workers                    : {solver.parameters.num_search_workers}")
+    print(f"Limite temps               : {solver.parameters.max_time_in_seconds}s")
 
+    # =====================================================
+    # SI PAS DE SOLUTION
+    # =====================================================
     if status not in [cp_model.OPTIMAL, cp_model.FEASIBLE]:
         print("❌ Aucune solution trouvée")
-        return [], []  # ← Retourner 2 listes vides
+        return [], []
 
+    # =====================================================
+    # (LE RESTE DE LA FONCTION EST STRICTEMENT INCHANGÉ)
+    # =====================================================
     jours_noms = [
         Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
         Weekday.THURSDAY, Weekday.FRIDAY, Weekday.SATURDAY, Weekday.SUNDAY
     ]
 
-    # Compter les assignations
-    total_Y = sum(1 for (p, v_idx, r_idx, j), var in Y.items() if solver.Value(var) == 1)
-    print(f"\nAssignations: {total_Y} rôles")
-
-    # ============ CRÉER LES SHIFTS ============
     shift_assignments = []
     planning_lignes = []
 
@@ -489,41 +549,23 @@ def run_solver(
             ))
         planning_lignes.append(ligne)
 
-    # ============ NOUVEAU : CRÉER LES VEHICLE AVAILABILITIES ============
     vehicle_availabilities = []
 
-    # Regrouper les véhicules par type (vehicule_id sans le suffixe _1, _2, etc.)
-    # Supposant que vehicule.vehicule_id est du format "vehicle_type_id_1", "vehicle_type_id_2"
     vehicles_by_base_id = {}
     for v in vehicules:
-        # Extraire l'ID de base (sans le _1, _2, etc.)
         base_id = v.vehicule_id.rsplit('_', 1)[0] if '_' in v.vehicule_id else v.vehicule_id
-        if base_id not in vehicles_by_base_id:
-            vehicles_by_base_id[base_id] = []
-        vehicles_by_base_id[base_id].append(v)
+        vehicles_by_base_id.setdefault(base_id, []).append(v)
 
-    # Pour chaque type de véhicule et chaque jour
     for base_id, vehicle_instances in vehicles_by_base_id.items():
         for j in range(7):
-            # Compter combien de véhicules de ce type sont opérationnels ce jour
             available_count = 0
-
             for v_idx, v in enumerate(vehicules):
                 if v not in vehicle_instances:
                     continue
-
-                # Vérifier si ce véhicule est complet ce jour
-                vehicule_complet = True
-                for r_idx in range(len(v.roles)):
-                    nb_assignes = sum(
-                        solver.Value(Y[p, v_idx, r_idx, j])
-                        for p in pompiers
-                    )
-                    if nb_assignes != 1:
-                        vehicule_complet = False
-                        break
-
-                if vehicule_complet:
+                if all(
+                    sum(solver.Value(Y[p, v_idx, r_idx, j]) for p in pompiers) == 1
+                    for r_idx in range(len(v.roles))
+                ):
                     available_count += 1
 
             vehicle_availabilities.append(VehicleAvailabilities(
@@ -531,14 +573,12 @@ def run_solver(
                 availableCount=available_count,
                 weekday=jours_noms[j]
             ))
-            print(vehicle_availabilities[-1])
-    # ============ FIN NOUVEAU CODE ============
 
-    # Générer le fichier output
     if output_file:
         _write_planning_file(output_file, planning_lignes, solver, Y, pompiers, vehicules, jours_noms)
 
-    return shift_assignments, vehicle_availabilities  # ← Retourner les 2 listes
+    return shift_assignments, vehicle_availabilities
+
 
 def _write_planning_file(output_file, planning_lignes, solver, Y, pompiers, vehicules, jours_noms):
     """Écrit le planning détaillé dans un fichier"""

@@ -3,7 +3,7 @@ PLANNING HEBDOMADAIRE
 
 RÉPARTITION DES POMPIERS
 ------------------------------------------------------------
-Alexandrine Nicolas         : ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
+Alexandrine Nicolas         : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
 Noël Barre           : ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ 
 Célien Collet          : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
 Valéry Leroux          : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
@@ -12,7 +12,7 @@ Ariane Dupont          : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥
 Alix Cousin          : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
 Hardouin Bernard         : ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
 Stéphane Rey             : 🟥 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
-Armel Vincent         : 🟥 ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ 
+Armel Vincent         : 🟥 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
 Frédéric Muller          : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
 Léandre Roger           : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
 Roger Garcia          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
@@ -20,11 +20,11 @@ Gonthier Dubois          : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜
 Abel Lefevre         : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ ⬜ 
 Annibal Moreau          : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ 🟥 
 Geoffroy Arnaud          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
-Salomé Picard          : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
-Clémence Paris           : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
+Salomé Picard          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
+Clémence Paris           : ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ 
 Corentin Lucas           : 🟥 ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ 
 Lorraine Moulin          : ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
-Amélien Giraud          : ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ 
+Amélien Giraud          : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 
 Acace Henry           : 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
 Amaryllis Roux            : ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ ⬜ 
 Dominique Remy            : ⬜ 🟥 🟥 ⬜ ⬜ 🟥 ⬜ 
@@ -36,9 +36,9 @@ Florestan Charles         : ⬜ ⬜ ⬜ 🟥 ⬜ 🟥 🟥
 André Marty           : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
 Mélisande Brun            : ⬜ ⬜ 🟥 🟥 🟥 🟥 🟥 
 Georgette Pierre          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
-Vianney Lacroix         : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
+Vianney Lacroix         : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
 Aveline Laurent         : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
-Dimitri Clement         : 🟥 ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ 
+Dimitri Clement         : 🟥 ⬜ 🟥 🟥 ⬜ ⬜ ⬜ 
 Jérôme Collet          : ⬜ 🟥 🟥 ⬜ ⬜ 🟥 ⬜ 
 Armel Barre           : ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ 
 Narcisse Brun            : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ 🟥 
@@ -46,13 +46,13 @@ Alexandrine Girard          : 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ ⬜
 Albane Fabre           : ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 ⬜ 
 Michèle Berger          : 🟥 ⬜ 🟥 🟥 ⬜ 🟥 ⬜ 
 Gustavine Chevalier       : ⬜ 🟥 🟥 ⬜ ⬜ ⬜ 🟥 
-Aliénor Lucas           : 🟥 🟥 ⬜ ⬜ ⬜ 🟥 🟥 
+Aliénor Lucas           : 🟥 ⬜ ⬜ ⬜ 🟥 🟥 🟥 
 Séverine Picard          : ⬜ 🟥 ⬜ ⬜ 🟥 ⬜ ⬜ 
 Sandrine Mathieu         : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
 Odilon Royer           : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ 🟥 
 Briac Lambert         : ⬜ ⬜ ⬜ 🟥 🟥 ⬜ 🟥 
 Alcidie Bonnet          : ⬜ ⬜ ⬜ 🟥 ⬜ ⬜ 🟥 
-Rita Colin           : ⬜ ⬜ 🟥 ⬜ 🟥 ⬜ ⬜ 
+Rita Colin           : ⬜ ⬜ 🟥 ⬜ ⬜ ⬜ 🟥 
 
 ============================================================
 
@@ -75,9 +75,9 @@ PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Sandrine Mathieu [CHEF_PE]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
-  ✓ Ariane Dupont [CHEF_PE]
   ✓ Clémence Paris [SUAP]
-  ✓ Lorraine Moulin [COND_B]
+  ✓ Lorraine Moulin [CHEF_PE]
+  ✓ Narcisse Brun [COND_B]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
   ✓ Roger Garcia [SUAP]
@@ -95,15 +95,15 @@ Canadair (✓ COMPLET) - 2/2 rôles
 
 PetitCamion (✓ COMPLET) - 4/4 rôles
   ✓ André Marty [CHEF_PE]
+  ✓ Jérôme Collet [INC]
   ✓ Albane Fabre [INC]
   ✓ Briac Lambert [COND_B]
-  ✓ Rita Colin [INC]
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Amélien Giraud [INC]
-  ✓ Georgette Pierre [CHEF_ME]
-  ✓ Vianney Lacroix [COND_C]
-  ✓ Jérôme Collet [INC]
+  ✓ Ariane Dupont [CHEF_ME]
+  ✓ Annibal Moreau [INC]
+  ✓ Florestan Charles [COND_C]
+  ✓ Georgette Pierre [INC]
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
   ✓ Hardouin Bernard [INC]
@@ -112,16 +112,16 @@ MoyenCamion (✓ COMPLET) - 4/4 rôles
   ✓ Séverine Picard [INC]
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Annibal Moreau [INC]
-  ✓ Florestan Charles [COND_C]
   ✓ Mélisande Brun [CHEF_ME]
+  ✓ Vianney Lacroix [COND_C]
   ✓ Odilon Royer [INC]
+  ✓ Rita Colin [INC]
 
 TUESDAY
 ----------------------------------------
 
 Ambulance (✓ COMPLET) - 3/3 rôles
-  ✓ Alexandrine Nicolas [SUAP]
+  ✓ Clémence Paris [SUAP]
   ✓ Dimitri Clement [COND_B]
   ✓ Alexandrine Girard [CHEF_PE]
 
@@ -131,12 +131,12 @@ PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Lorraine Moulin [COND_B]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
-  ✓ Armel Vincent [CHEF_PE]
+  ✓ Valéry Leroux [CHEF_PE]
   ✓ Frédéric Muller [COND_B]
-  ✓ Gonthier Dubois [SUAP]
+  ✓ Aliénor Lucas [SUAP]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
-  ✓ Valéry Leroux [CHEF_PE]
+  ✓ Noël Barre [CHEF_PE]
   ✓ Amélien Giraud [COND_B]
   ✓ Michèle Berger [SUAP]
 
@@ -171,8 +171,8 @@ MoyenCamion (✓ COMPLET) - 4/4 rôles
   ✓ Briac Lambert [INC]
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Noël Barre [INC]
-  ✓ Salomé Picard [COND_C]
+  ✓ Gonthier Dubois [INC]
+  ✓ Vianney Lacroix [COND_C]
   ✓ Sandrine Mathieu [CHEF_ME]
   ✓ Rita Colin [INC]
 
@@ -196,7 +196,7 @@ PetitBateau (✓ COMPLET) - 3/3 rôles
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Lorraine Moulin [CHEF_PE]
-  ✓ Albane Fabre [COND_B]
+  ✓ Séverine Picard [COND_B]
   ✓ Alcidie Bonnet [SUAP]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
@@ -221,9 +221,9 @@ PetitCamion (✓ COMPLET) - 4/4 rôles
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
   ✓ Alix Cousin [CHEF_ME]
+  ✓ Salomé Picard [COND_C]
   ✓ Amélien Giraud [INC]
   ✓ Alphonse Bourgeois [INC]
-  ✓ Vianney Lacroix [COND_C]
 
 MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   (aucun pompier assigné)
@@ -250,17 +250,17 @@ PetitBateau (✓ COMPLET) - 3/3 rôles
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Célien Collet [SUAP]
-  ✓ Florence Benoit [COND_B]
   ✓ Armel Vincent [CHEF_PE]
+  ✓ Séverine Picard [COND_B]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Roger Garcia [CHEF_PE]
-  ✓ Jérôme Collet [COND_B]
+  ✓ Amélien Giraud [COND_B]
   ✓ Alexandrine Girard [SUAP]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
+  ✓ Alexandrine Nicolas [SUAP]
   ✓ Stéphane Rey [PERMIS_AVION]
-  ✓ Clémence Paris [SUAP]
   ✓ Aliénor Lucas [SUAP]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
@@ -274,25 +274,25 @@ Canadair (✓ COMPLET) - 2/2 rôles
 
 PetitCamion (✓ COMPLET) - 4/4 rôles
   ✓ Noël Barre [INC]
-  ✓ André Marty [CHEF_PE]
-  ✓ Georgette Pierre [INC]
-  ✓ Albane Fabre [COND_B]
+  ✓ André Marty [COND_B]
+  ✓ Georgette Pierre [CHEF_PE]
+  ✓ Jérôme Collet [INC]
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Léandre Roger [CHEF_ME]
   ✓ Gonthier Dubois [INC]
-  ✓ Vianney Lacroix [COND_C]
-  ✓ Séverine Picard [INC]
-  ✓ Sandrine Mathieu [CHEF_ME]
+  ✓ Salomé Picard [COND_C]
+  ✓ Sandrine Mathieu [INC]
 
 MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Léandre Roger [CHEF_ME]
-  ✓ Salomé Picard [COND_C]
-  ✓ Dimitri Clement [INC]
-  ✓ Gustavine Chevalier [INC]
+  ✓ Florence Benoit [INC]
+  ✓ Vianney Lacroix [COND_C]
+  ✓ Albane Fabre [INC]
+  ✓ Gustavine Chevalier [CHEF_ME]
 
 FRIDAY
 ----------------------------------------
@@ -309,8 +309,8 @@ PetitBateau (✓ COMPLET) - 3/3 rôles
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Noël Barre [CHEF_PE]
-  ✓ Léandre Roger [SUAP]
   ✓ André Marty [COND_B]
+  ✓ Gustavine Chevalier [SUAP]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Hardouin Bernard [COND_B]
@@ -325,7 +325,7 @@ Helicoptere (✓ COMPLET) - 3/3 rôles
 Helicoptere (✓ COMPLET) - 3/3 rôles
   ✓ Stéphane Rey [PERMIS_AVION]
   ✓ Michèle Berger [SUAP]
-  ✓ Aliénor Lucas [SUAP]
+  ✓ Alcidie Bonnet [SUAP]
 
 Canadair (✓ COMPLET) - 2/2 rôles
   ✓ Ansbert Lambert [PERMIS_AVION]
@@ -333,33 +333,33 @@ Canadair (✓ COMPLET) - 2/2 rôles
 
 PetitCamion (✓ COMPLET) - 4/4 rôles
   ✓ Florence Benoit [COND_B]
-  ✓ Lorraine Moulin [CHEF_PE]
-  ✓ Amélien Giraud [INC]
+  ✓ Lorraine Moulin [INC]
   ✓ Alphonse Bourgeois [INC]
-
-MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Athalie Le roux [INC]
-  ✓ Florestan Charles [COND_C]
-  ✓ Jérôme Collet [INC]
-  ✓ Gustavine Chevalier [CHEF_ME]
-
-MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Armel Vincent [INC]
-  ✓ Annibal Moreau [INC]
-  ✓ Salomé Picard [COND_C]
-  ✓ Amaryllis Roux [CHEF_ME]
+  ✓ Dimitri Clement [CHEF_PE]
 
 MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
+
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Armel Vincent [INC]
+  ✓ Annibal Moreau [INC]
+  ✓ Amaryllis Roux [CHEF_ME]
+  ✓ Vianney Lacroix [COND_C]
+
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Léandre Roger [CHEF_ME]
+  ✓ Florestan Charles [COND_C]
+  ✓ Jérôme Collet [INC]
+  ✓ Rita Colin [INC]
 
 SATURDAY
 ----------------------------------------
 
 Ambulance (✓ COMPLET) - 3/3 rôles
   ✓ Ariane Dupont [CHEF_PE]
-  ✓ Roger Garcia [SUAP]
   ✓ Geoffroy Arnaud [COND_B]
+  ✓ Alcidie Bonnet [SUAP]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Célien Collet [COND_B]
@@ -368,13 +368,13 @@ PetitBateau (✓ COMPLET) - 3/3 rôles
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Frédéric Muller [SUAP]
+  ✓ Roger Garcia [CHEF_PE]
   ✓ Annibal Moreau [COND_B]
-  ✓ Acace Henry [CHEF_PE]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
   ✓ Gonthier Dubois [SUAP]
   ✓ Lorraine Moulin [CHEF_PE]
-  ✓ Alcidie Bonnet [COND_B]
+  ✓ Amélien Giraud [COND_B]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
   ✓ Florence Benoit [SUAP]
@@ -382,7 +382,7 @@ Helicoptere (✓ COMPLET) - 3/3 rôles
   ✓ Amaryllis Roux [SUAP]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
-  ✓ Alexandrine Nicolas [SUAP]
+  ✓ Acace Henry [SUAP]
   ✓ Athalie Le roux [PERMIS_AVION]
   ✓ Séverine Picard [SUAP]
 
@@ -402,15 +402,15 @@ MoyenCamion (✓ COMPLET) - 4/4 rôles
   ✓ Briac Lambert [INC]
   ✓ Rita Colin [INC]
 
+MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Alix Cousin [INC]
+  ✓ Salomé Picard [COND_C]
+  ✓ Georgette Pierre [CHEF_ME]
+  ✓ Dimitri Clement [INC]
+
 MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   (aucun pompier assigné)
   Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
-
-MoyenCamion (✓ COMPLET) - 4/4 rôles
-  ✓ Alix Cousin [CHEF_ME]
-  ✓ Salomé Picard [COND_C]
-  ✓ Georgette Pierre [INC]
-  ✓ Dimitri Clement [INC]
 
 SUNDAY
 ----------------------------------------
@@ -421,13 +421,13 @@ Ambulance (✓ COMPLET) - 3/3 rôles
   ✓ Geoffroy Arnaud [SUAP]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
-  ✓ Noël Barre [SUAP]
-  ✓ Armel Vincent [CHEF_PE]
-  ✓ Rita Colin [COND_B]
+  ✓ Alexandrine Nicolas [SUAP]
+  ✓ Noël Barre [CHEF_PE]
+  ✓ Séverine Picard [COND_B]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
-  ✓ Frédéric Muller [SUAP]
-  ✓ Corentin Gauthier [COND_B]
+  ✓ Alix Cousin [SUAP]
+  ✓ Armel Vincent [COND_B]
   ✓ André Marty [CHEF_PE]
 
 PetitBateau (✓ COMPLET) - 3/3 rôles
@@ -441,9 +441,9 @@ Helicoptere (✓ COMPLET) - 3/3 rôles
   ✓ Corentin Lucas [SUAP]
 
 Helicoptere (✓ COMPLET) - 3/3 rôles
-  ✓ Alix Cousin [SUAP]
   ✓ Abel Lefevre [PERMIS_AVION]
   ✓ Amaryllis Roux [SUAP]
+  ✓ Corentin Gauthier [SUAP]
 
 Canadair (✓ COMPLET) - 2/2 rôles
   ✓ Dominique Remy [PERMIS_AVION]
@@ -460,9 +460,9 @@ MoyenCamion (✗ INCOMPLET) - 0/4 rôles
   Manquants: 1 CHEF_ME, 1 COND_C, 2 INC
 
 MoyenCamion (✓ COMPLET) - 4/4 rôles
+  ✓ Salomé Picard [COND_C]
   ✓ Amélien Giraud [INC]
   ✓ Georgette Pierre [CHEF_ME]
-  ✓ Vianney Lacroix [COND_C]
   ✓ Albane Fabre [INC]
 
 MoyenCamion (✗ INCOMPLET) - 0/4 rôles

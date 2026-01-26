@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List, Tuple, Final, Optional
 
 from ortools.sat.python import cp_model
-import codecarbon
 from src.entities.planning import PlanningFinalizationDto, VehicleAvailabilities
 from src.entities.availability_slot_firefighter import AvailabilitySlotFF
 from src.entities.firefighter import FirefighterFilters
@@ -14,14 +13,11 @@ from src.entities.shift_assignment import ShiftAssignmentCreationDto, ShiftType
 from src.entities.vehicle import VehicleFilters
 from src.entities.vehicule import Vehicule
 from src.utils.remote_client import remote_client
-from src.entities.availability_slot import Weekday, AvailabilitySlot, AvailabilitySlotFilters
+from src.entities.availability_slot import Weekday, AvailabilitySlotFilters
 
-# =====================================================
-# CONSTANTES
-# =====================================================
 _OUTPUT_DIR: Final = Path("output")
 _MAX_WORKING_DAYS_PER_WEEK: Final = 5
-_MAX_CONSECUTIVE_WORKING_DAYS: Final = 3  # Vraiment 3 jours max d'affilée
+_MAX_CONSECUTIVE_WORKING_DAYS: Final = 3
 _MIN_FIREFIGHTERS_PER_DAY: Final = 10
 _WEEK_DAYS: Final = list(range(7))
 
@@ -43,6 +39,7 @@ except ImportError:
         # Case 2: Called as @track_emissions(...) (with parentheses/arguments)
         def decorator(func):
             return func
+
         return decorator
 
 
@@ -83,7 +80,7 @@ async def _get_availability_slot_for_firefighter_and_week(firefighter_id: str,we
         filters=AvailabilitySlotFilters(year=year, firefighterId=firefighter_id, weekNumber=week_number)
     )
 
-    disponibilties = []
+    availabilities = []
     for availability_slot in availability_slots:
 
         dispo = AvailabilitySlotFF(
@@ -92,9 +89,9 @@ async def _get_availability_slot_for_firefighter_and_week(firefighter_id: str,we
             firefighterId=availability_slot.firefighterId,
 
         )
-        disponibilties.append(dispo)
+        availabilities.append(dispo)
 
-    return disponibilties
+    return availabilities
 
 async def _get_vehicules_for_station(station_id: str) -> List[Vehicule]:
     vehicles = await remote_client.get_vehicles(
@@ -140,7 +137,6 @@ async def _get_availability_slots_for_all_firefighters(
 
     all_slots = await asyncio.gather(*tasks)
 
-    # Créer un dictionnaire pompier_id -> disponibilités
     availability_map = {}
     for pompier, slots in zip(pompiers, all_slots):
         availability_map[pompier.pompier_id] = slots
@@ -164,22 +160,14 @@ async def _get_data(planning_id: str) -> Tuple[List[Pompier], List[Vehicule], di
         _get_pompiers_for_station(station_id=fire_station.id)
     )
 
-    # Récupérer les disponibilités de tous les pompiers
-    # ATTENTION: Vous devez récupérer week_number et year du planning !
-    # Je suppose que planning a ces attributs, sinon adaptez
-    week_number = planning.weekNumber  # À adapter selon votre modèle
-    year = planning.year  # À adapter selon votre modèle
-
     availability_map = await _get_availability_slots_for_all_firefighters(
         pompiers=pompiers,
-        week_number=week_number,
-        year=year
+        week_number=planning.weekNumber,
+        year=planning.year
     )
 
-    return pompiers, vehicules, availability_map, week_number, year
-# =====================================================
-# CRÉATION DES VARIABLES
-# =====================================================
+    return pompiers, vehicules, availability_map, planning.weekNumber, planning.year
+
 
 def _create_variables(model, pompiers):
     """Variables X[p, j] : pompier p travaille le jour j"""
@@ -309,6 +297,7 @@ def add_contrainte_disponibilites(model, X, pompiers, availability_map):
                 jour_index = weekday_to_index[slot.weekday]
                 # Forcer X[p, jour] = 0 (ne travaille pas)
                 model.Add(X[p, jour_index] == 0)
+
 
 def add_contrainte_roles_vehicules(model, Y, pompiers, vehicules):
     """Un véhicule est soit complètement armé, soit vide"""
@@ -518,16 +507,10 @@ def run_solver(
     print(f"Workers                    : {solver.parameters.num_search_workers}")
     print(f"Limite temps               : {solver.parameters.max_time_in_seconds}s")
 
-    # =====================================================
-    # SI PAS DE SOLUTION
-    # =====================================================
     if status not in [cp_model.OPTIMAL, cp_model.FEASIBLE]:
         print("❌ Aucune solution trouvée")
         return [], []
 
-    # =====================================================
-    # (LE RESTE DE LA FONCTION EST STRICTEMENT INCHANGÉ)
-    # =====================================================
     jours_noms = [
         Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
         Weekday.THURSDAY, Weekday.FRIDAY, Weekday.SATURDAY, Weekday.SUNDAY
@@ -537,7 +520,7 @@ def run_solver(
     planning_lignes = []
 
     for p in pompiers:
-        ligne = f"{p.prenom} {p.nom:15} : "
+        ligne = f"{p.prenom + ' ' + p.nom:25} : "
         for j in range(7):
             travaille = solver.Value(X[p, j])
             ligne += "⬜ " if travaille else "🟥 "
@@ -650,7 +633,7 @@ def _write_planning_file(output_file, planning_lignes, solver, Y, pompiers, vehi
 
         total_roles = sum(len(v.roles) for v in vehicules) * 7
         roles_remplis = sum(
-            1 for (p, v_idx, r_idx, j), var in Y.items()
+            1 for var in Y.values()
             if solver.Value(var) == 1
         )
 
@@ -662,10 +645,6 @@ def _write_planning_file(output_file, planning_lignes, solver, Y, pompiers, vehi
             complets = sum(1 for c in compositions if c["complet"])
             f.write(f"{jours_noms[j].name}: {complets}/{len(vehicules)} véhicules complets\n")
 
-
-# =====================================================
-# FONCTION PRINCIPALE
-# =====================================================
 
 @track_emissions()
 async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
@@ -697,8 +676,7 @@ async def solve(planning_id: str, output_file: Optional[str] = None) -> None:
     # Résolution
     shifts_assignment, vehicles_availabilities = run_solver(model, X, Y, firefighters, vehicles, output_file)
 
-    # Envoi à l'API
-    if shifts_assignment:
+    if len(shifts_assignment) > 0 and len(vehicles_availabilities) > 0:
         await remote_client.finalize_planning(
             planning_id=planning_id,
             planning_finalization_dto=PlanningFinalizationDto(

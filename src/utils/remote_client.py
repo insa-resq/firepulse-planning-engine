@@ -167,9 +167,7 @@ class _RemoteClient:
         response.raise_for_status()
         return Planning.model_validate(response.json(), extra="ignore")
 
-
-    async def finalize_planning(self, planning_id: str, planning_finalization_dto: PlanningFinalizationDto
-                                ) -> FinalizedPlanning:
+    async def finalize_planning(self, planning_id: str, planning_finalization_dto: PlanningFinalizationDto) -> FinalizedPlanning:
         """
         Finalizes a planning by its ID
         """

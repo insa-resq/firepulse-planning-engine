@@ -24,13 +24,13 @@ class Planning(BaseModel):
 
 class VehicleAvailabilities(BaseModel):
     vehicleId: str
-    availableCount: int  # Il manque le jour ?
+    availableCount: int
     weekday: Weekday
+
     def as_dict(self) -> Dict[str, str]:
         return self.model_dump(
             exclude_unset=True,
             exclude_none=True,
-
         )
 
 class PlanningFinalizationDto(BaseModel):
@@ -46,4 +46,3 @@ class PlanningFinalizationDto(BaseModel):
 class FinalizedPlanning(BaseModel):
     planning: Planning
     shiftAssignments: List[ShiftAssignment]
-
